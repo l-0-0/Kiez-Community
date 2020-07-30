@@ -1,0 +1,8 @@
+1. we just use <form method="POST> for the application with routes, that the user clicks th sub,it button and 
+    it goes to another page. for single page apps we don't need form tag. 
+
+2. in our register.js we don't need to put anything in our state. the component makes them with this
+    line of code:
+    this.setState({
+            [e.target.name]: e.target.value,
+        });

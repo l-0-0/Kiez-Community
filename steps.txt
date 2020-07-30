@@ -1,0 +1,8 @@
+Need to add:
+
+1. s3
+2. csurf
+
+
+read about again:
+1. token in csurf
