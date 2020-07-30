@@ -10,3 +10,9 @@ module.exports.register = function (firstName, lastName, email, password) {
     let params = [firstName, lastName, email, password];
     return db.query(q, params);
 };
+
+module.exports.getPassword = function (email) {
+    let q = "SELECT password, id FROM users WHERE email = $1";
+    let params = [email];
+    return db.query(q, params);
+};

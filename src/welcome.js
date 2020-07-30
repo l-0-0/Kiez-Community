@@ -1,24 +1,30 @@
 import React from "react";
 import Registration from "./register";
+import Login from "./login";
+import { HashRouther, Route, Link } from "react-router-dom";
 
 export default function Welcome(props) {
-    const style = {
-        backgroundColor: "tomato",
-    };
+    // const style = {
+    //     backgroundColor: "tomato",
+    // };
     return (
-        <div style={style}>
-            <h1>Welcome to </h1>
-            <img src="/kiez.png" alt="logo" />
-            <h2>Are you living in Kotti and Loving it?</h2>
-            <h1>Join the Kiez Community!</h1>
+        // <div style={style}>
+        <HashRouther>
             <div>
-                <Registration />
+                <h1>Welcome to </h1>
+                <img className="logo-welcome" src="/logoB.png" alt="logo" />
+                <h2>Are you living in Kotti and Loving it?</h2>
+                <h1>Join the Kiez Community!</h1>
+
+                <Route exact path="/" component={Registration} />
+                <Route path="/login" component={Login} />
+
+                <p>
+                    Are you already a member?
+                    <Link to="/login">Log in!</Link>
+                </p>
             </div>
-            <p>
-                Are you already a member?
-                <a href="/login">Log in to your account!</a>
-            </p>
-        </div>
+        </HashRouther>
     );
 }
 

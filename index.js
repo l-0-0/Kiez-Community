@@ -14,20 +14,18 @@ app.use(express.static("public"));
 
 app.use(
     cookieSession({
-        secret: `Let it be.`,
+        secret: "let it be.",
         maxAge: 1000 * 60 * 60 * 24 * 14,
     })
 );
 app.use(express.json());
 //it has to be after cookie session and urlencoded
-// app.use(csurf());
+app.use(csurf());
 
-// //it prevents of clickjacking
-// app.use(function (req, res, next) {
-//     res.setHeader("x-frame-options", "deny");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
+app.use(function (req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -85,7 +83,7 @@ app.post("/register", (req, res) => {
             )
                 .then((results) => {
                     // console.log("hashed user password:", hashedPw);
-                    console.log(results.rows[0]);
+                    // console.log(results.rows[0]);
                     req.session.userId = results.rows[0].id;
                     req.session.success = "true";
                     res.json({
@@ -101,6 +99,47 @@ app.post("/register", (req, res) => {
         })
         .catch((err) => {
             console.log("error in send the info in POST register", err);
+        });
+});
+
+app.post("/login", (req, res) => {
+    db.getPassword(req.body.email)
+        .then((results) => {
+            // console.log(req.body.email, results.rows[0].password);
+            if (!results.rows[0]) {
+                res.json({
+                    success: "false",
+                });
+            } else {
+                // console.log(req.body.password, results.rows[0].password);
+                compare(req.body.password, results.rows[0].password)
+                    .then((matchValue) => {
+                        console.log(
+                            "does the user password match our hash in the database?",
+                            matchValue
+                        );
+                        if (matchValue) {
+                            req.session.userId = results.rows[0].usersId;
+                            res.jeson({ success: "true" });
+                        } else {
+                            res.json({
+                                success: "false",
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("error in maching the password", err);
+                        res.json({
+                            success: "false",
+                        });
+                    });
+            }
+        })
+        .catch((err) => {
+            console.log("error in getting the email and password", err);
+            res.json({
+                success: "false",
+            });
         });
 });
 

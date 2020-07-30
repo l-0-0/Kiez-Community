@@ -7,7 +7,7 @@ let elem;
 let isLoggedIn = location.pathname != "/welcome";
 
 if (isLoggedIn) {
-    elem = <img src="/kiez.png" alt="logo" />;
+    elem = <img src="/logo.png" alt="logo" />;
 } else {
     elem = <Welcome />;
 }
