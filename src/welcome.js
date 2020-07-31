@@ -1,7 +1,7 @@
 import React from "react";
 import Registration from "./register";
 import Login from "./login";
-import { HashRouther, Route, Link } from "react-router-dom";
+import { HashRouter, Route, Link } from "react-router-dom";
 
 export default function Welcome(props) {
     // const style = {
@@ -9,7 +9,7 @@ export default function Welcome(props) {
     // };
     return (
         // <div style={style}>
-        <HashRouther>
+        <HashRouter>
             <div>
                 <h1>Welcome to </h1>
                 <img className="logo-welcome" src="/logoB.png" alt="logo" />
@@ -24,7 +24,7 @@ export default function Welcome(props) {
                     <Link to="/login">Log in!</Link>
                 </p>
             </div>
-        </HashRouther>
+        </HashRouter>
     );
 }
 

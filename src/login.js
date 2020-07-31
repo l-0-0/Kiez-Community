@@ -49,10 +49,11 @@ export default class Login extends React.Component {
                 />
                 <input
                     onChange={(e) => this.handleChange(e)}
+                    type="password"
                     name="password"
                     placeholder="Password"
                 />
-                <button onClick={(e) => this.login()}>Log in</button>
+                <button onClick={() => this.login()}>Log in</button>
             </div>
         );
     }

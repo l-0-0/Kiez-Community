@@ -105,22 +105,26 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     db.getPassword(req.body.email)
         .then((results) => {
-            // console.log(req.body.email, results.rows[0].password);
+            console.log("result", req.body.email, results.rows[0].password);
             if (!results.rows[0]) {
                 res.json({
                     success: "false",
                 });
             } else {
-                // console.log(req.body.password, results.rows[0].password);
+                console.log(req.body.password, results.rows[0].password);
                 compare(req.body.password, results.rows[0].password)
                     .then((matchValue) => {
+                        req.session.userId = results.rows[0].usersId;
                         console.log(
                             "does the user password match our hash in the database?",
                             matchValue
                         );
                         if (matchValue) {
-                            req.session.userId = results.rows[0].usersId;
-                            res.jeson({ success: "true" });
+                            req.session.userId = results.rows[0].id;
+                            req.session.success = "true";
+                            res.json({
+                                success: "true",
+                            });
                         } else {
                             res.json({
                                 success: "false",
