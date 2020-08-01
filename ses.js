@@ -8,7 +8,28 @@ if (process.env.NODE_ENV == "production") {
 }
 
 const ses = new aws.SES({
-    accessKeyId: secrets.AWS_KEY,
-    secretAccessKey: secrets.AWS_SECRET,
+    accessKeyId: secrets.accessKeyId,
+    secretAccessKey: secrets.accessKeySecret,
     region: "eu-west-1",
 });
+
+exports.sendEmail = (to, text, subj) => {
+    return ses
+        .sendEmail({
+            Source: "Kiez Community<majestic.headphones@spicedling.email>",
+            Destination: {
+                ToAddresses: [to],
+            },
+            Message: {
+                Body: {
+                    Text: {
+                        Data: text,
+                    },
+                },
+                Subject: {
+                    Data: subj,
+                },
+            },
+        })
+        .promise();
+};

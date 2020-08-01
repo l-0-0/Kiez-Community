@@ -1,6 +1,7 @@
 import React from "react";
 import Registration from "./register";
 import Login from "./login";
+import ResetPassword from "./resetpassword";
 import { HashRouter, Route, Link } from "react-router-dom";
 
 export default function Welcome(props) {
@@ -11,17 +12,19 @@ export default function Welcome(props) {
         // <div style={style}>
         <HashRouter>
             <div>
-                <h1>Welcome to </h1>
+                <h2>Welcome to </h2>
                 <img className="logo-welcome" src="/logoB.png" alt="logo" />
-                <h2>Are you living in Kotti and Loving it?</h2>
-                <h1>Join the Kiez Community!</h1>
+                <h3>Are you living in Kotti and Loving it?</h3>
+                <h3>Join the Kiez Community!</h3>
 
                 <Route exact path="/" component={Registration} />
                 <Route path="/login" component={Login} />
+                <Route path="/reset" component={ResetPassword} />
 
                 <p>
                     Are you already a member?
                     <Link to="/login">Log in!</Link>
+                    <Link to="/reset">Reset the password!</Link>
                 </p>
             </div>
         </HashRouter>

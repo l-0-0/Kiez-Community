@@ -6,3 +6,41 @@
     this.setState({
             [e.target.name]: e.target.value,
         });
+
+3. in the code below, returning the qurey means that we don't want to put the catch there, when something 
+goes wrong it will catch it later with the main catch
+app.post("/reset", (req, res) => {
+       const secretCode = cryptoRandomString({
+        length: 6,
+    });
+    db.getPassword(req.body.email)
+        .then((results) => {
+            console.log("result", results.rows);
+
+            if (results.rows[0]) {
+                console.log("i#m already a user");
+
+                let to = results.rows[0].email;
+                let text = secretCode;
+                let subj = "Reset your password";
+                return db
+                    .storeTheCode(to, text)
+                    .then((results) => {
+                        console.log(results.rows[0]);
+                        return sendEmail(to, text, subj);
+                    })
+                    .then(() => {
+                        res.json({
+                            success: "true",
+                        });
+                    });
+            } else {
+                console.log("you're a lier");
+            }
+        })
+        .catch((err) => {
+            console.log("error in getting the email ", err);
+        });
+});
+
+

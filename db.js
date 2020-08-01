@@ -12,7 +12,31 @@ module.exports.register = function (firstName, lastName, email, password) {
 };
 
 module.exports.getPassword = function (email) {
-    let q = "SELECT password, id FROM users WHERE email = $1";
+    let q = "SELECT * FROM users WHERE email = $1";
     let params = [email];
+    return db.query(q, params);
+};
+
+// module.exports.checkEmail = function (email) {
+//     let q = "SELECT * FROM users WHERE email = $1 ";
+//     let params = [email];
+//     return db.query(q, params);
+// };
+
+module.exports.storeTheCode = function (email, code) {
+    let q = `INSERT INTO password_reset_codes (email, code) VALUES ($1, $2) RETURNING *`;
+    let params = [email, code];
+    return db.query(q, params);
+};
+
+module.exports.getTheCode = function () {
+    let q = `SELECT * FROM password_reset_codes
+            WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`;
+    return db.query(q);
+};
+
+module.exports.addTheNewPassword = function (email, hashedPassword) {
+    let q = `UPDATE users SET password = $2 WHERE email = $1;`;
+    let params = [email, hashedPassword];
     return db.query(q, params);
 };

@@ -3,6 +3,8 @@ const db = require("./db");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 const { hash, compare } = require("./bc");
+const { sendEmail } = require("./ses");
+const cryptoRandomString = require("crypto-random-string");
 
 const compression = require("compression");
 
@@ -145,6 +147,120 @@ app.post("/login", (req, res) => {
                 success: "false",
             });
         });
+});
+
+app.post("/reset-password", (req, res) => {
+    //     const { id } = req.params;
+    //     const results = await db.checkEmail(id);
+    //     console.log(results.rows);
+
+    //     if (id === req.session.userId) {
+    //         console.log("i#m already a user");
+    //     } else {
+    //         console.log("you're a lier");
+    //     }
+    // });
+    const secretCode = cryptoRandomString({
+        length: 6,
+    });
+
+    db.getPassword(req.body.email)
+        .then((results) => {
+            // console.log("result", results.rows[0]);
+
+            if (results.rows[0]) {
+                console.log("i#m already a user");
+
+                let to = results.rows[0].email;
+                let text = secretCode;
+                let subj = "Reset your password";
+                db.storeTheCode(to, text)
+                    .then(() => {
+                        return sendEmail(to, text, subj);
+                    })
+                    .then((results) => {
+                        // console.log("results send email: ", results);
+                        res.json({
+                            success: "true",
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("error in send email: ", err);
+                    })
+                    .catch((err) => {
+                        console.log("error in sending the email ", err);
+                        res.json({
+                            success: "false",
+                        });
+                    });
+            } else {
+                console.log("you're a lier");
+                res.json({
+                    success: "false",
+                });
+            }
+        })
+        .catch((err) => {
+            console.log("error in getting the email ", err);
+        });
+});
+
+app.post("/new-password", (req, res) => {
+    let newCode = req.body.code;
+    let email = req.body.email;
+    let pass = req.body.password;
+    // console.log(
+    //     "code before db: ",
+    //     req.body.code,
+    //     req.body.email,
+    //     req.body.password
+    // );
+    db.getTheCode()
+        .then((results) => {
+            // console.log("code: ", results.rows[0]);
+            if (newCode === results.rows[0].code) {
+                // console.log("it's working: ", results.rows[0]);
+                hash(pass)
+                    .then((hashedPassword) => {
+                        db.addTheNewPassword(email, hashedPassword)
+                            .then(() => {
+                                // console.log(
+                                //     "hashed user password:",
+                                //     hashedPassword
+                                // );
+
+                                req.session.success = "true";
+                                res.json({
+                                    success: "true",
+                                });
+                            })
+                            .catch((err) => {
+                                console.log(
+                                    "error in hash in POST register",
+                                    err
+                                );
+                                res.json({
+                                    success: "false",
+                                });
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(
+                            "error in send the info in POST add new password",
+                            err
+                        );
+                    });
+            }
+        })
+        .catch((err) => {
+            console.log("error in new password", err);
+        });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    console.log("your're logged out");
+    res.redirect("/");
 });
 
 app.get("*", function (req, res) {
