@@ -40,3 +40,9 @@ module.exports.addTheNewPassword = function (email, hashedPassword) {
     let params = [email, hashedPassword];
     return db.query(q, params);
 };
+
+module.exports.userInfo = function (id) {
+    let q = `SELECT id, first, last, profile_pic FROM users WHERE id=$1`;
+    let params = [id];
+    return db.query(q, params);
+};

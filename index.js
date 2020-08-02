@@ -107,7 +107,7 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     db.getPassword(req.body.email)
         .then((results) => {
-            console.log("result", req.body.email, results.rows[0].password);
+            // console.log("result", req.body.email, results.rows[0].password);
             if (!results.rows[0]) {
                 res.json({
                     success: "false",
@@ -178,7 +178,7 @@ app.post("/reset-password", (req, res) => {
                     .then(() => {
                         return sendEmail(to, text, subj);
                     })
-                    .then((results) => {
+                    .then(() => {
                         // console.log("results send email: ", results);
                         res.json({
                             success: "true",
@@ -254,6 +254,21 @@ app.post("/new-password", (req, res) => {
         })
         .catch((err) => {
             console.log("error in new password", err);
+        });
+});
+
+app.get("/user", (req, res) => {
+    db.userInfo(req.session.userId)
+        .then((results) => {
+            // console.log("user info: ", results.rows[0]);
+
+            res.json(
+                results.rows[0]
+                // success: "true",
+            );
+        })
+        .catch((err) => {
+            console.log("error in getting user info: ", err);
         });
 });
 
