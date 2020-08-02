@@ -2,13 +2,13 @@ import React from "react";
 import axios from "./axios";
 import ProfilePic from "./profilepic";
 // import Logo from "./logo";
-// import Uploader from "./uploader";
+import Uploader from "./uploader";
 // import { HashRouter, Route, Link } from "react-router-dom";
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { visibleUploader: false };
     }
 
     componentDidMount() {
@@ -41,6 +41,16 @@ export default class App extends React.Component {
                 })
             );
     }
+    // uploadPic() {
+    //     this.setState({ profileImg });
+    // }
+
+    toggleModal() {
+        console.log("toggle modal is running");
+        this.setState({
+            visibleUploader: !this.state.visibleUploader,
+        });
+    }
     render() {
         return (
             <div>
@@ -51,7 +61,17 @@ export default class App extends React.Component {
                     first={this.state.first}
                     last={this.state.last}
                     profileImg={this.state.profileImg}
+                    toggleModal={() => {
+                        this.toggleModal();
+                    }}
                 />
+                <Uploader
+                    profileImg={this.state.profileImg}
+                    componentDidMount={() => {
+                        this.componentDidMount();
+                    }}
+                />
+                {this.state.visibleUploader && <Uploader />}
             </div>
         );
     }

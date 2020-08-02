@@ -5,6 +5,8 @@ const csurf = require("csurf");
 const { hash, compare } = require("./bc");
 const { sendEmail } = require("./ses");
 const cryptoRandomString = require("crypto-random-string");
+const s3 = require("./s3");
+const { s3Url } = require("./config");
 
 const compression = require("compression");
 
@@ -269,6 +271,22 @@ app.get("/user", (req, res) => {
         })
         .catch((err) => {
             console.log("error in getting user info: ", err);
+        });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    const { filename } = req.file;
+    console.log("file:", req.file);
+
+    const url = s3Url + filename;
+
+    db.addImage(req.session.userId, url)
+        .then((results) => {
+            console.log("results.rows:", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in addImage query: ", err);
         });
 });
 
