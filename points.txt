@@ -90,3 +90,5 @@ app.post("/reset", (req, res) => {
     
 5. when a child make an ajax request, the data from the server goes back first to the parent and the 
     parent send the data to the child via props. 
+
+

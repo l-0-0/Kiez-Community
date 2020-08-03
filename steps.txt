@@ -1,6 +1,6 @@
 Need to change:
 1. make the input fields empty after entering the information --> email
-
+2. add class in react way
 
 
 read about again:

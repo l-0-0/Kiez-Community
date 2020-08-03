@@ -36,7 +36,7 @@ module.exports.addTheNewPassword = function (email, hashedPassword) {
 };
 
 module.exports.userInfo = function (id) {
-    let q = `SELECT id, first, last, profile_pic FROM users WHERE id=$1`;
+    let q = `SELECT id, first, last, bio, profile_pic FROM users WHERE id=$1`;
     let params = [id];
     return db.query(q, params);
 };
@@ -44,5 +44,11 @@ module.exports.userInfo = function (id) {
 module.exports.addImage = (id, url) => {
     let q = `UPDATE users SET profile_pic = $2 WHERE id=$1 RETURNING profile_pic`;
     let params = [id, url];
+    return db.query(q, params);
+};
+
+module.exports.addBio = (id, bio) => {
+    let q = `UPDATE users SET bio = $2 WHERE id=$1 RETURNING bio`;
+    let params = [id, bio];
     return db.query(q, params);
 };

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import axios from "./axios";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
-// import Logo from "./logo";
+import Logo from "./logo";
+import Profile from "./profile";
 // import { HashRouter, Route, Link } from "react-router-dom";
 
 export default class App extends React.Component {
@@ -11,6 +12,7 @@ export default class App extends React.Component {
         this.state = { visibleUploader: false };
         this.toggleModal = this.toggleModal.bind(this);
         this.showTheImage = this.showTheImage.bind(this);
+        this.updateTheBio = this.updateTheBio.bind(this);
     }
 
     componentDidMount() {
@@ -27,6 +29,7 @@ export default class App extends React.Component {
                             last: data.last,
                             profileImg: data.profile_pic,
                             userId: data.id,
+                            bio: data.bio,
                         },
                         () => {
                             console.log("this state in app:", this.state);
@@ -53,6 +56,12 @@ export default class App extends React.Component {
         // console.log("image is: ", image);
     }
 
+    updateTheBio(nBio) {
+        this.setState({
+            bio: nBio,
+        });
+    }
+
     toggleModal() {
         // console.log("toggle modal is running");
         this.setState({
@@ -61,23 +70,41 @@ export default class App extends React.Component {
     }
 
     render() {
+        // if (!this.state.id) {
+        //     return null;
+        // }
         return (
-            <div>
-                <ProfilePic
-                    //give props to the child
-                    first={this.state.first}
-                    last={this.state.last}
-                    profileImg={this.state.profileImg}
-                    userId={this.state.userId}
-                    toggleModal={() => {
-                        this.toggleModal();
-                    }}
-                />
+            <Fragment>
+                <header>
+                    <Logo />
+                    <ProfilePic
+                        //give props to the child
 
-                {this.state.visibleUploader && (
-                    <Uploader showTheImage={this.showTheImage} />
-                )}
-            </div>
+                        first={this.state.first}
+                        last={this.state.last}
+                        profileImg={this.state.profileImg}
+                        userId={this.state.userId}
+                        toggleModal={() => {
+                            this.toggleModal();
+                        }}
+                    />
+
+                    {this.state.visibleUploader && (
+                        <Uploader showTheImage={this.showTheImage} />
+                    )}
+                </header>
+                <div>
+                    <Profile
+                        first={this.state.first}
+                        last={this.state.last}
+                        id={this.state.id}
+                        profileImg={this.state.profileImg}
+                        bio={this.state.bio}
+                        setBio={this.setBio}
+                        updateTheBio={this.updateTheBio}
+                    />
+                </div>
+            </Fragment>
         );
     }
 }

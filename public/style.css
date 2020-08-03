@@ -3,7 +3,27 @@ body {
     margin: 0;
     color: aliceblue;
 }
+header {
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
 
 .logo-welcome {
     width: 500px;
+}
+
+.profile-pic-small {
+    height: 100px;
+    width: 100px;
+}
+
+.logo-small {
+    float: left;
+}
+
+.profile-pic-large {
+    height: 300px;
+    width: 300px;
 }

@@ -290,6 +290,17 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
+app.post("/bio", (req, res) => {
+    db.addBio(req.session.userId, req.body.bio)
+        .then((results) => {
+            // console.log("results.rows:", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in addbio query: ", err);
+        });
+});
+
 app.get("/logout", (req, res) => {
     req.session.userId = null;
     console.log("your're logged out");
