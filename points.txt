@@ -44,3 +44,49 @@ app.post("/reset", (req, res) => {
 });
 
 
+4. passing a funtion to a child-class based component:
+    - define a function on the parent
+                    toggleModal() {
+                        console.log("toggle modal is running");
+                        this.setState({
+                            visibleUploader: !this.state.visibleUploader,
+                        });
+                    }
+
+
+    - bind the function that will be possible to call the this on it:
+                    this.toggleModal = this.toggleModal.bind(this);
+    
+    - call it on the render of the child component in the parent:
+
+                     {this.state.visibleUploader && (
+                        <Uploader
+                            profileImg={this.state.profileImg}
+                            toggleModal={this.toggleModal}
+                        />
+                    )}
+
+    - on the child component call it with the 'this.props.nameOfTheFunction'. for example in the 
+        below example is called on p tag
+
+                    render() {
+                        console.log("this.props in uploader: ", this.props);
+                        return (
+                            <div>
+                                <h1>I am the uploader</h1>
+                                <p onClick={this.props.toggleModal}>X</p>
+                                <input
+                                    onChange={(e) => this.handleChange(e)}
+                                    type="file"
+                                    name="file"
+                                    accept="image/*"
+                                ></input>
+                                <button onClick={(e) => this.handleClick(e)}>submit</button>
+                            </div>
+                        );
+                    }
+
+
+    
+5. when a child make an ajax request, the data from the server goes back first to the parent and the 
+    parent send the data to the child via props. 

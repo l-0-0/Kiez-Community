@@ -41,13 +41,6 @@ module.exports.userInfo = function (id) {
     return db.query(q, params);
 };
 
-module.exports.addImage = (title, description, username, url) => {
-    let q = `INSERT INTO images (title, username, description, url) 
-    VALUES($1, $2, $3, $4) RETURNING *`;
-    let params = [title, description, username, url];
-    return db.query(q, params);
-};
-
 module.exports.addImage = (id, url) => {
     let q = `UPDATE users SET profile_pic = $2 WHERE id=$1 RETURNING profile_pic`;
     let params = [id, url];

@@ -282,7 +282,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
     db.addImage(req.session.userId, url)
         .then((results) => {
-            console.log("results.rows:", results.rows[0]);
+            // console.log("results.rows:", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch((err) => {

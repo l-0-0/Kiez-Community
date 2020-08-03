@@ -6,7 +6,8 @@ import axios from "./axios";
 export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { modalOpen: true };
+
+        this.state = {};
     }
 
     handleChange(e) {
@@ -24,15 +25,10 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                this.setState(
-                    {
-                        profileImg: data.profile_pic,
-                    },
-                    () => {
-                        console.log("this state:", this.state);
-                    }
-                );
-                // console.log("success with this data", data);
+                //when the data is back we call the function from the parent
+                //the arg comes from the server!
+                this.props.showTheImage(data.profile_pic);
+                console.log(data);
             })
             .catch(() =>
                 this.setState({
@@ -41,25 +37,18 @@ export default class Uploader extends React.Component {
             );
     }
 
-    close() {
-        console.log("closeing?");
-        this.setState({
-            modalOpen: !this.state.modalOpen,
-        });
-    }
-
     render() {
+        // console.log("this.props in uploader: ", this.props);
         return (
             <div>
-                <h1>I am the uploader</h1>
-                <p onClick={() => this.close()}>X</p>
                 <input
                     onChange={(e) => this.handleChange(e)}
                     type="file"
                     name="file"
                     accept="image/*"
                 ></input>
-                <button onClick={(e) => this.handleClick(e)}>submit</button>
+
+                <button onClick={(e) => this.handleClick(e)}>Upload</button>
             </div>
         );
     }
