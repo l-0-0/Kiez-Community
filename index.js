@@ -302,8 +302,10 @@ app.post("/bio", (req, res) => {
 });
 
 app.get("/api/user/:id", (req, res) => {
-    console.log("req.params.id: ", typeof req.params.id);
-    console.log("req.session: ", typeof req.session.userId);
+    // type of params.id and session.id is different. one is a number and one is a string. so when I put
+    //=== in my if statement, it doesn't work!
+    // console.log("req.params.id: ", typeof req.params.id);
+    // console.log("req.session: ", typeof req.session.userId);
     if (req.params.id == req.session.userId) {
         res.json({
             isTheSameUser: true,
@@ -314,7 +316,7 @@ app.get("/api/user/:id", (req, res) => {
                 console.log("results in api/user: ", results.rows[0]);
                 res.json(results.rows[0]);
             })
-            .then((err) => {
+            .catch((err) => {
                 console.log("error in api/user: ", err);
             });
     }
