@@ -21,15 +21,20 @@ export default class BioEditor extends React.Component {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.bio !== this.props.bio) {
+            this.setState({
+                bioText: "show",
+            });
+        }
+    }
+
     submit() {
         axios
             .post("/bio", { bio: this.state.textarea })
             .then(({ data }) => {
-                console.log("bio", data.bio);
+                // console.log("bio", data.bio);
                 this.props.updateTheBio(data.bio);
-                this.setState({
-                    bioText: "show",
-                });
             })
             .catch(() =>
                 this.setState({
@@ -41,9 +46,20 @@ export default class BioEditor extends React.Component {
     render() {
         const { bioText } = this.state;
         // console.log("props in bio", this.props);
-        if (bioText === "add") {
-            return <button onClick={() => this.editBio()}>Add bio</button>;
-        } else if (bioText === "edit") {
+        if (bioText === "show") {
+            if (this.props.bio) {
+                return (
+                    <div>
+                        <p>{this.props.bio}</p>
+                        <button onClick={() => this.editBio()}>
+                            Edit your bio
+                        </button>
+                    </div>
+                );
+            } else {
+                return <button onClick={() => this.editBio()}>Add bio</button>;
+            }
+        } else {
             return (
                 <div>
                     <textarea
@@ -52,15 +68,6 @@ export default class BioEditor extends React.Component {
                         defaultValue={this.props.bio}
                     ></textarea>
                     <button onClick={() => this.submit()}>Save</button>
-                </div>
-            );
-        } else if (bioText === "show") {
-            return (
-                <div>
-                    <p>{this.props.bio}</p>
-                    <button onClick={() => this.editBio()}>
-                        Edit your bio
-                    </button>
                 </div>
             );
         }

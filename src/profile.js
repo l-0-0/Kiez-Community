@@ -3,7 +3,7 @@ import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
 
 export default function Profile(props) {
-    let { first, last, profileImg, bio, updateTheBio } = props;
+    let { first, last, profileImg, bio, updateTheBio, toggleModal } = props;
 
     return (
         <div>
@@ -14,6 +14,7 @@ export default function Profile(props) {
                 first={first}
                 last={last}
                 profileImg={profileImg}
+                toggleModal={toggleModal}
                 className="profile-pic-large"
             />
             <BioEditor

@@ -100,8 +100,8 @@ export default class App extends React.Component {
                         id={this.state.id}
                         profileImg={this.state.profileImg}
                         bio={this.state.bio}
-                        setBio={this.setBio}
                         updateTheBio={this.updateTheBio}
+                        toggleModal={this.toggleModal}
                     />
                 </div>
             </Fragment>
