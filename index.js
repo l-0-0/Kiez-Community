@@ -276,7 +276,7 @@ app.get("/user", (req, res) => {
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { filename } = req.file;
-    console.log("file:", req.file);
+    // console.log("file:", req.file);
 
     const url = s3Url + filename;
 
@@ -299,6 +299,25 @@ app.post("/bio", (req, res) => {
         .catch((err) => {
             console.log("error in addbio query: ", err);
         });
+});
+
+app.get("/api/user/:id", (req, res) => {
+    console.log("req.params.id: ", typeof req.params.id);
+    console.log("req.session: ", typeof req.session.userId);
+    if (req.params.id == req.session.userId) {
+        res.json({
+            isTheSameUser: true,
+        });
+    } else {
+        db.userInfo(req.params.id)
+            .then((results) => {
+                console.log("results in api/user: ", results.rows[0]);
+                res.json(results.rows[0]);
+            })
+            .then((err) => {
+                console.log("error in api/user: ", err);
+            });
+    }
 });
 
 app.get("/logout", (req, res) => {

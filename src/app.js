@@ -4,7 +4,8 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
-// import { HashRouter, Route, Link } from "react-router-dom";
+import OtherProfile from "./otherprofile";
+import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export default class App extends React.Component {
         axios
             .get("/user")
             .then(({ data }) => {
-                console.log("data: ", { data });
+                // console.log("data: ", { data });
 
                 if (data) {
                     this.setState(
@@ -30,15 +31,13 @@ export default class App extends React.Component {
                             profileImg: data.profile_pic,
                             userId: data.id,
                             bio: data.bio,
-                        },
-                        () => {
-                            console.log("this state in app:", this.state);
                         }
+                        // () => {
+                        //     console.log("this state in app:", this.state);
+                        // }
                     );
                 } else {
-                    this.setState({
-                        error: true,
-                    });
+                    this.props.history.push("/");
                 }
             })
             .catch(() =>
@@ -73,38 +72,58 @@ export default class App extends React.Component {
         // if (!this.state.id) {
         //     return null;
         // }
+
         return (
-            <Fragment>
-                <header>
-                    <Logo />
-                    <ProfilePic
-                        //give props to the child
+            <BrowserRouter>
+                <Fragment>
+                    <header>
+                        <Logo />
+                        <ProfilePic
+                            //give props to the child
 
-                        first={this.state.first}
-                        last={this.state.last}
-                        profileImg={this.state.profileImg}
-                        userId={this.state.userId}
-                        toggleModal={() => {
-                            this.toggleModal();
-                        }}
-                    />
+                            first={this.state.first}
+                            last={this.state.last}
+                            profileImg={this.state.profileImg}
+                            userId={this.state.userId}
+                            toggleModal={() => {
+                                this.toggleModal();
+                            }}
+                        />
 
-                    {this.state.visibleUploader && (
-                        <Uploader showTheImage={this.showTheImage} />
-                    )}
-                </header>
-                <div>
-                    <Profile
-                        first={this.state.first}
-                        last={this.state.last}
-                        id={this.state.id}
-                        profileImg={this.state.profileImg}
-                        bio={this.state.bio}
-                        updateTheBio={this.updateTheBio}
-                        toggleModal={this.toggleModal}
-                    />
-                </div>
-            </Fragment>
+                        {this.state.visibleUploader && (
+                            <Uploader showTheImage={this.showTheImage} />
+                        )}
+                    </header>
+                    <div>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Profile
+                                    first={this.state.first}
+                                    last={this.state.last}
+                                    id={this.state.id}
+                                    profileImg={this.state.profileImg}
+                                    bio={this.state.bio}
+                                    updateTheBio={this.updateTheBio}
+                                    toggleModal={this.toggleModal}
+                                />
+                            )}
+                        />
+                        <Route
+                            path="/user/:id"
+                            component={OtherProfile}
+                            render={(props) => (
+                                <OtherProfile
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                            )}
+                        />
+                    </div>
+                </Fragment>
+            </BrowserRouter>
         );
     }
 }
