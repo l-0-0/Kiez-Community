@@ -92,3 +92,14 @@ app.post("/reset", (req, res) => {
     parent send the data to the child via props. 
 
 
+6. when we make a component we have to render it in the parent to actually see it and make it work. 
+
+7. it's very important not to have the same route name which we put for the (axios-app.get) and the one 
+    that we render with it in the parent. if they are the same, we get a json rendered in the browser.
+
+8. when we use props && ...., it means this props should be there and then the next function will be run. 
+    for example here: we have to have the people first and then the map starts doing its job!
+            {people &&
+                people.map((eachPerson, id) => {
+                    return <p key={id}>{eachPerson}</p>;
+                })}

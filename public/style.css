@@ -2,12 +2,14 @@ body {
     background-color: black;
     margin: 0;
     color: aliceblue;
+    font-family: "Roboto", sans-serif;
 }
 header {
     height: 200px;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    grid-gap: 1rem;
+    /* align-items: center; */
 }
 
 .logo-welcome {
@@ -17,13 +19,44 @@ header {
 .profile-pic-small {
     height: 100px;
     width: 100px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 
 .logo-small {
     float: left;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
-.profile-pic-large {
+header a {
+    float: right;
+
+    margin-top: 10px;
+    color: aliceblue;
+}
+
+.profile-container img {
     height: 300px;
     width: 300px;
+}
+
+.profile-container {
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+}
+
+.user-info {
+    margin-left: 20px;
+    margin-top: 50px;
+    font-size: 20px;
+}
+
+.user-name {
+    text-decoration: underline;
+    font-weight: bold;
 }

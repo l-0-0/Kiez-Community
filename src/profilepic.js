@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function ProfilePic(props) {
-    console.log("props in profile pic: ", props);
+    // console.log("props in profile pic: ", props);
     let { first, last, profileImg, toggleModal } = props;
 
     profileImg = profileImg || "/images/default.png";
@@ -9,7 +9,7 @@ export default function ProfilePic(props) {
 
     return (
         <div>
-            {/* My profile pic of {first} , {last} */}
+            <a href="/logout">Logout</a>
             <img
                 className="profile-pic-small"
                 onClick={toggleModal}

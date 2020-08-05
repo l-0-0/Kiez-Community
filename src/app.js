@@ -5,6 +5,7 @@ import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {
@@ -78,6 +79,7 @@ export default class App extends React.Component {
                 <Fragment>
                     <header>
                         <Logo />
+                        {/* <a href="/logout">Logout</a> */}
                         <ProfilePic
                             //give props to the child
 
@@ -88,6 +90,8 @@ export default class App extends React.Component {
                             toggleModal={() => {
                                 this.toggleModal();
                             }}
+
+                            // ProfilePicClass="profile-pic-small"
                         />
 
                         {this.state.visibleUploader && (
@@ -107,9 +111,11 @@ export default class App extends React.Component {
                                     bio={this.state.bio}
                                     updateTheBio={this.updateTheBio}
                                     toggleModal={this.toggleModal}
+                                    // ProfilePicClass="profile-pic-large"
                                 />
                             )}
                         />
+                        <Route path="/users" component={FindPeople} />
                         <Route
                             path="/user/:id"
                             component={OtherProfile}
@@ -118,6 +124,7 @@ export default class App extends React.Component {
                                     key={props.match.url}
                                     match={props.match}
                                     history={props.history}
+                                    // ProfilePicClass="profile-pic-large"
                                 />
                             )}
                         />

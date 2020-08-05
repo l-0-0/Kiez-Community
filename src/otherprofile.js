@@ -28,18 +28,20 @@ export default class OtherProfile extends React.Component {
         }
     }
     render() {
-        console.log("props in otherprofile: ", this.props);
-        console.log("state in otherprofile: ", this.state);
+        // console.log("props in otherprofile: ", this.props);
+        // console.log("state in otherprofile: ", this.state);
         return (
-            <div>
+            <div className="profile-container">
                 <img
                     src={this.state.profileImg}
                     alt={`${this.state.first} ${this.state.last}`}
                 />
-                <p>
-                    {this.state.first} {this.state.last}
-                </p>
-                <p>{this.state.bio}</p>
+                <div className="user-info">
+                    <p className="user-name">
+                        {this.state.first} {this.state.last}
+                    </p>
+                    <p className="user-bio">{this.state.bio}</p>
+                </div>
             </div>
         );
     }

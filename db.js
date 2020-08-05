@@ -52,3 +52,14 @@ module.exports.addBio = (id, bio) => {
     let params = [id, bio];
     return db.query(q, params);
 };
+
+module.exports.getUsers = () => {
+    let q = `SELECT * FROM users ORDER BY id DESC LIMIT 3`;
+    return db.query(q);
+};
+
+module.exports.getSearchedPeople = (input) => {
+    let q = `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1`;
+    let params = [input + "%"];
+    return db.query(q, params);
+};

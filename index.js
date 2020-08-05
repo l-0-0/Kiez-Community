@@ -12,6 +12,12 @@ const compression = require("compression");
 
 const app = express();
 
+//middleware to see which files/routes we use on the browser
+app.use((req, res, next) => {
+    // console.log("req.url", req.url);
+    next();
+});
+
 app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
@@ -313,13 +319,36 @@ app.get("/api/user/:id", (req, res) => {
     } else {
         db.userInfo(req.params.id)
             .then((results) => {
-                console.log("results in api/user: ", results.rows[0]);
+                // console.log("results in api/user: ", results.rows[0]);
                 res.json(results.rows[0]);
             })
             .catch((err) => {
                 console.log("error in api/user: ", err);
             });
     }
+});
+
+app.get("/api/users", (req, res) => {
+    db.getUsers()
+        .then((results) => {
+            res.json(results.rows);
+            // console.log("results.rows in users route", results.rows);
+        })
+        .catch((err) => {
+            console.log("error in users route: ", err);
+        });
+});
+
+app.get("/find-people/:userInput", (req, res) => {
+    console.log("userinput", req.params.userInput);
+    db.getSearchedPeople(req.params.userInput)
+        .then((results) => {
+            res.json(results.rows);
+            console.log("results.rows in find people", results.rows);
+        })
+        .catch((err) => {
+            console.log("error in find people: ", err);
+        });
 });
 
 app.get("/logout", (req, res) => {
