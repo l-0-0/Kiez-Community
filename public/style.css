@@ -60,3 +60,15 @@ header a {
     text-decoration: underline;
     font-weight: bold;
 }
+
+.find-user {
+    height: 200px;
+    margin-left: 20px;
+}
+
+.find-user img {
+    height: 150px;
+    width: 150px;
+
+    border-radius: 5px;
+}
