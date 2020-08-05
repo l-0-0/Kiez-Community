@@ -341,6 +341,7 @@ app.get("/api/users", (req, res) => {
 
 app.get("/find-people/:userInput", (req, res) => {
     console.log("userinput", req.params.userInput);
+    // if (req.params.userInput) {
     db.getSearchedPeople(req.params.userInput)
         .then((results) => {
             res.json(results.rows);
@@ -349,6 +350,12 @@ app.get("/find-people/:userInput", (req, res) => {
         .catch((err) => {
             console.log("error in find people: ", err);
         });
+    // } else {
+    //     console.log("empty");
+    //     // res.json({
+    //     //     success: "false",
+    //     // });
+    // }
 });
 
 app.get("/logout", (req, res) => {
