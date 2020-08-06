@@ -340,8 +340,6 @@ app.get("/api/users", (req, res) => {
 });
 
 app.get("/find-people/:userInput", (req, res) => {
-    // console.log("userinput", req.params.userInput);
-    // if (req.params.userInput) {
     db.getSearchedPeople(req.params.userInput)
         .then((results) => {
             if (results.rows.length === 0) {
@@ -350,18 +348,62 @@ app.get("/find-people/:userInput", (req, res) => {
                 });
             } else {
                 res.json(results.rows);
-                console.log("results.rows in find people", results.rows);
+                // console.log("results.rows in find people", results.rows);
             }
         })
         .catch((err) => {
             console.log("error in find people: ", err);
         });
-    // } else {
-    //     console.log("empty");
-    //     // res.json({
-    //     //     success: "false",
-    //     // });
-    // }
+});
+
+app.get("/api/friendship/:viewedId", (req, res) => {
+    db.friendshipStatus(req.params.viewedId, req.session.userId)
+        .then((results) => {
+            console.log("results in friendship status", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("error in getting the friendship status", err);
+        });
+});
+
+app.post("/friendship-status", (req, res) => {
+    console.log("req.body: ", req.body);
+
+    if (req.body.buttonText == "add") {
+        db.addFriend(req.body.viewedId, req.session.userId)
+            .then(() => {
+                res.json({
+                    success: true,
+                });
+            })
+            .catch((err) => {
+                console.log("error in adding a friend", err);
+            });
+    } else if (req.body.buttonText == "accept") {
+        db.acceptedFriendship(req.body.viewedId, req.session.userId)
+            .then(() => {
+                res.json({
+                    success: true,
+                });
+            })
+            .catch((err) => {
+                console.log("error in accepting the request", err);
+            });
+    } else if (
+        req.body.buttonText == "cancel" ||
+        req.body.buttonText == "defriend"
+    ) {
+        db.deleteTheFriendship(req.body.viewedId, req.session.userId)
+            .then(() => {
+                res.json({
+                    success: true,
+                });
+            })
+            .catch((err) => {
+                console.log("error in deleting the request", err);
+            });
+    }
 });
 
 app.get("/logout", (req, res) => {

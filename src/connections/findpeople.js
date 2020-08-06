@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import axios from "./axios";
+import axios from "../axios";
 
 export default function FindPeople() {
     const [people, setPeople] = useState([]);
@@ -24,7 +24,7 @@ export default function FindPeople() {
         if (userInput !== "") {
             (async () => {
                 const { data } = await axios.get(`/find-people/${userInput}`);
-                // console.log("data in search users* route", data);
+                console.log("data in search users* route", data);
                 if (data.success == false) {
                     setError(true);
                     setPeople([]);

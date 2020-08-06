@@ -59,7 +59,32 @@ module.exports.getUsers = () => {
 };
 
 module.exports.getSearchedPeople = (input) => {
-    let q = `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1 OR last ILIKE $1`;
+    let q = `SELECT first, last, profile_pic, id FROM users WHERE first ILIKE $1 OR last ILIKE $1`;
     let params = [input + "%"];
+    return db.query(q, params);
+};
+
+module.exports.friendshipStatus = (viewedId, userId) => {
+    let q = `SELECT * FROM friendships
+  WHERE (recipient_id = $1 AND sender_id = $2)
+  OR (recipient_id = $2 AND sender_id = $1)`;
+    let params = [viewedId, userId];
+    return db.query(q, params);
+};
+
+module.exports.addFriend = (viewedId, userId) => {
+    let q = `INSERT INTO friendships (recipient_id, sender_id) VALUES ($1, $2) `;
+    let params = [viewedId, userId];
+    return db.query(q, params);
+};
+
+module.exports.acceptedFriendship = (viewedId, userId) => {
+    let q = `UPDATE friendships SET accepted='true' WHERE recipient_id=$1 AND sender_id=$2  `;
+    let params = [viewedId, userId];
+    return db.query(q, params);
+};
+module.exports.deleteTheFriendship = (viewedId, userId) => {
+    let q = `DELETE FROM friendships WHERE recipient_id=$1 AND sender_id=$2  `;
+    let params = [viewedId, userId];
     return db.query(q, params);
 };

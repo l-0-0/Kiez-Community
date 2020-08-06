@@ -5,7 +5,7 @@ import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
-import FindPeople from "./findpeople";
+import FindPeople from "./connections/findpeople";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {

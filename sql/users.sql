@@ -1,6 +1,7 @@
 --to run the code in terminal
 --psql social_network -f sql/users.sql
 
+DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS password_reset_codes;
 
@@ -21,4 +22,12 @@ CREATE TABLE password_reset_codes(
     email VARCHAR(255),
     code VARCHAR(6),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE friendships( 
+    id SERIAL PRIMARY KEY,
+    sender_id INT REFERENCES users(id) NOT NULL,
+    recipient_id INT REFERENCES users(id) NOT NULL,
+    accepted BOOLEAN DEFAULT false
 );
