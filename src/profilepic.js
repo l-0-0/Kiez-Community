@@ -9,7 +9,7 @@ export default function ProfilePic(props) {
 
     return (
         <div>
-            <a href="/logout">Logout</a>
+            {/* <a href="/logout">Logout</a> */}
             <img
                 className="profile-pic-small"
                 onClick={toggleModal}

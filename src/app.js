@@ -79,7 +79,7 @@ export default class App extends React.Component {
                 <Fragment>
                     <header>
                         <Logo />
-                        {/* <a href="/logout">Logout</a> */}
+
                         <ProfilePic
                             //give props to the child
 
@@ -97,6 +97,7 @@ export default class App extends React.Component {
                         {this.state.visibleUploader && (
                             <Uploader showTheImage={this.showTheImage} />
                         )}
+                        <a href="/logout">Logout</a>
                     </header>
                     <div>
                         <Route

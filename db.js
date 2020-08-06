@@ -59,7 +59,7 @@ module.exports.getUsers = () => {
 };
 
 module.exports.getSearchedPeople = (input) => {
-    let q = `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1`;
+    let q = `SELECT first, last, profile_pic FROM users WHERE first ILIKE $1 OR last ILIKE $1`;
     let params = [input + "%"];
     return db.query(q, params);
 };

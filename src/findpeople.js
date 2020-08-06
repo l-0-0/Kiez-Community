@@ -4,6 +4,7 @@ import axios from "./axios";
 export default function FindPeople() {
     const [people, setPeople] = useState([]);
     const [userInput, setUserInput] = useState("");
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -23,9 +24,15 @@ export default function FindPeople() {
         if (userInput !== "") {
             (async () => {
                 const { data } = await axios.get(`/find-people/${userInput}`);
-                console.log("data in search users *********** route", data);
-                if (!abort) {
-                    setPeople(data);
+                // console.log("data in search users* route", data);
+                if (data.success == false) {
+                    setError(true);
+                    setPeople([]);
+                } else {
+                    if (!abort) {
+                        setError(false);
+                        setPeople(data);
+                    }
                 }
             })();
             return () => {
@@ -42,23 +49,25 @@ export default function FindPeople() {
         <Fragment>
             <div>
                 <input
+                    className="input-field"
                     onChange={handleChange}
                     value={userInput}
                     name="finding"
                 />
             </div>
             <div>
+                {error && <p>There is no user based on your search!</p>}
                 {people &&
                     people.map((eachPerson, id) => {
                         return (
                             <div key={id} className="find-user">
-                                <p>
-                                    {eachPerson.first} {eachPerson.last}
-                                </p>
                                 <img
                                     className="find-user"
                                     src={eachPerson.profile_pic}
                                 />
+                                <p>
+                                    {eachPerson.first} {eachPerson.last}
+                                </p>
                             </div>
                         );
                     })}

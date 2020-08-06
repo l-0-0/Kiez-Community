@@ -6,14 +6,21 @@ body {
 }
 header {
     height: 200px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(300px, 1fr));
-    grid-gap: 1rem;
-    /* align-items: center; */
+    display: block;
 }
 
 .logo-welcome {
     width: 500px;
+}
+header a {
+    float: right;
+    margin-top: 10px;
+    color: aliceblue;
+    padding-right: 20px;
+    margin-top: 5rem;
+}
+header a:hover {
+    background-color: green;
 }
 
 .profile-pic-small {
@@ -29,13 +36,6 @@ header {
     float: left;
     margin-left: 10px;
     margin-top: 10px;
-}
-
-header a {
-    float: right;
-
-    margin-top: 10px;
-    color: aliceblue;
 }
 
 .profile-container img {
@@ -64,6 +64,9 @@ header a {
 .find-user {
     height: 200px;
     margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .find-user img {
@@ -71,4 +74,18 @@ header a {
     width: 150px;
 
     border-radius: 5px;
+}
+
+.find-user p {
+    margin-left: 20px;
+    font-weight: bold;
+    padding-top: 3rem;
+}
+
+.input-field {
+    margin: 20px;
+    height: 30px;
+    width: 200px;
+    font-size: 15px;
+    text-align: center;
 }
