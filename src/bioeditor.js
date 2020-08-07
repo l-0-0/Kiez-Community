@@ -49,7 +49,7 @@ export default class BioEditor extends React.Component {
         if (bioText === "show") {
             if (this.props.bio) {
                 return (
-                    <div>
+                    <div className="show-bio">
                         <p>{this.props.bio}</p>
                         <button onClick={() => this.editBio()}>
                             Edit your bio
@@ -61,7 +61,7 @@ export default class BioEditor extends React.Component {
             }
         } else {
             return (
-                <div>
+                <div className="textarea-box">
                     <textarea
                         name="textarea"
                         onChange={(e) => this.handleChange(e)}

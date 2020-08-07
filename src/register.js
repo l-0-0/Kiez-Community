@@ -38,7 +38,7 @@ export default class Registration extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="forms">
                 {this.state.error && (
                     <div className="error">Oops! You blew it.</div>
                 )}

@@ -1,7 +1,7 @@
 body {
-    background-color: black;
+    background-color: #ffbc0a;
     margin: 0;
-    color: aliceblue;
+    color: #2f4858;
     font-family: "Roboto", sans-serif;
 }
 header {
@@ -9,33 +9,110 @@ header {
     display: block;
 }
 
+.welcome-page {
+    display: flex;
+    flex-direction: column;
+    /* align-content: center; */
+    margin-top: 30px;
+}
+
+.forms {
+    width: 670px;
+    align-self: center;
+    margin-bottom: -30px;
+}
+
+.welcome-page-text {
+    align-self: center;
+    text-align: center;
+    font-family: "Paytone One", sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.welcome-link {
+    align-self: center;
+    color: #2f4858;
+    text-align: center;
+    margin-top: 0;
+}
+
+.welcome-link a {
+    padding: 10px;
+    align-self: center;
+    color: #2f4858;
+    font-weight: bold;
+}
+.forms input {
+    /* display: block; */
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    font-size: 15px;
+    text-align: left;
+    border-radius: 5px;
+    border-color: #5d576b;
+}
+
+.forms button {
+    margin-top: 10px;
+    margin-left: 13rem;
+    /* align-self: center; */
+}
+
 .logo-welcome {
     width: 500px;
+    border-radius: 5px;
+    align-self: center;
 }
-header a {
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
     float: right;
-    margin-top: 10px;
-    color: aliceblue;
-    padding-right: 20px;
+    display: inline;
+    font-size: 20px;
+    height: 30px;
     margin-top: 5rem;
+    font-weight: bold;
 }
-header a:hover {
-    background-color: green;
+
+.navbar li a {
+    color: #2f4858;
+    text-align: center;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+    border: none;
+}
+.navbar li a:hover {
+    background-color: #fc2f00;
+    color: white;
 }
 
 .profile-pic-small {
     height: 100px;
     width: 100px;
     float: right;
-    margin-right: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
+    margin-right: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    margin-left: 20px;
 }
 
 .logo-small {
     float: left;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
 }
 
 .profile-container img {
@@ -90,7 +167,7 @@ header a:hover {
     text-align: center;
 }
 
-.friendship-button {
+button {
     width: 250px;
     height: 50px;
     font-size: 15px;
@@ -98,10 +175,90 @@ header a:hover {
     margin: 30px;
     text-align: center;
     transition: 0.3s;
-    border: none;
+    border: 2px solid #2f4858;
+    border-radius: 5px;
+    background-color: #9da9a0;
 }
 
-.friendship-button:hover {
-    background-color: green;
+button:hover {
+    background-color: #fc2f00;
+    border: none;
     color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.title {
+    margin-left: 6rem;
+}
+
+.show-bio {
+    width: 350px;
+    padding: 5rem;
+    font-size: 20px;
+}
+
+.show-bio button {
+    margin-top: 5rem;
+}
+.textarea-box {
+    margin-top: -2rem;
+    width: 350px;
+    padding: 5rem;
+
+    font-size: 15px;
+    /* padding: 0; */
+}
+
+.textarea-box textarea {
+    margin-top: -2rem;
+    width: 350px;
+    height: 150px;
+    font-size: 15px;
+    padding: 0;
+}
+
+.textarea-box button {
+    margin-top: 5rem;
+}
+
+/* color: #ec7d10; */
+
+.photo-uploader {
+    background-color: #2f4858;
+    width: 300px;
+    height: 150px;
+    float: right;
+    position: fixed;
+    top: 150px;
+    right: 10px;
+    transition: 3s;
+
+    border-radius: 5px;
+    padding-top: 30px;
+}
+
+.files {
+    visibility: hidden;
+}
+
+.label {
+    /* border: 2px solid #ec7d10; */
+    border-radius: 5px;
+    outline: none;
+    /* white-space: nowrap; */
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: white;
+    text-decoration: underline;
+}
+
+.label:hover {
+    color: #fc2f00;
 }

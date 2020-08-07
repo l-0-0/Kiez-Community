@@ -7,17 +7,17 @@ export default function Profile(props) {
 
     return (
         <Fragment>
-            <div>
-                <h2>
-                    {first} {last}
-                </h2>
-
+            <h2 className="title">
+                {first} {last}
+            </h2>
+            <div className="profile-container">
                 <ProfilePic
                     first={first}
                     last={last}
                     profileImg={profileImg}
                     toggleModal={toggleModal}
                 />
+
                 <BioEditor
                     first={first}
                     last={last}

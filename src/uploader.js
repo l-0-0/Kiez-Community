@@ -40,13 +40,17 @@ export default class Uploader extends React.Component {
     render() {
         // console.log("this.props in uploader: ", this.props);
         return (
-            <div>
-                <input
-                    onChange={(e) => this.handleChange(e)}
-                    type="file"
-                    name="file"
-                    accept="image/*"
-                ></input>
+            <div className="photo-uploader">
+                <label className="label">
+                    select a photo
+                    <input
+                        className="files"
+                        onChange={(e) => this.handleChange(e)}
+                        type="file"
+                        name="file"
+                        accept="image/*"
+                    ></input>
+                </label>
 
                 <button onClick={(e) => this.handleClick(e)}>Upload</button>
             </div>

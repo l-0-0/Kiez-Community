@@ -11,21 +11,23 @@ export default function Welcome(props) {
     return (
         // <div style={style}>
         <HashRouter>
-            <div>
-                <h2>Welcome to </h2>
-                <img className="logo-welcome" src="/logoB.png" alt="logo" />
-                <h3>Are you living in Kotti and Loving it?</h3>
-                <h3>Join the Kiez Community!</h3>
+            <div className="welcome-page">
+                <img className="logo-welcome" src="/logo-new.jpg" alt="logo" />
+                <div className="welcome-page-text">
+                    <p>Living in Kotti and Loving it?</p>
+                    <h2>Join the KIEZ Community!</h2>
+                </div>
 
                 <Route exact path="/" component={Registration} />
                 <Route path="/login" component={Login} />
                 <Route path="/reset" component={ResetPassword} />
 
-                <p>
-                    Are you already a member?
-                    <Link to="/login">Log in!</Link>
-                    <Link to="/reset">Reset the password!</Link>
-                </p>
+                <div className="welcome-link">
+                    <p>Are you already a member?</p>
+
+                    <Link to="/login"> Log in </Link>
+                    <Link to="/reset"> Reset the password! </Link>
+                </div>
             </div>
         </HashRouter>
     );

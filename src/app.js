@@ -90,14 +90,24 @@ export default class App extends React.Component {
                             toggleModal={() => {
                                 this.toggleModal();
                             }}
-
-                            // ProfilePicClass="profile-pic-small"
                         />
 
                         {this.state.visibleUploader && (
                             <Uploader showTheImage={this.showTheImage} />
                         )}
-                        <a href="/logout">Logout</a>
+                        <div className="navbar">
+                            <ul>
+                                <li>
+                                    <a href="/logout">Logout</a>
+                                </li>
+                                <li>
+                                    <a href="/users">Find People</a>
+                                </li>
+                                <li>
+                                    <a href="/">My Profile</a>
+                                </li>
+                            </ul>
+                        </div>
                     </header>
                     <div>
                         <Route
@@ -112,7 +122,6 @@ export default class App extends React.Component {
                                     bio={this.state.bio}
                                     updateTheBio={this.updateTheBio}
                                     toggleModal={this.toggleModal}
-                                    // ProfilePicClass="profile-pic-large"
                                 />
                             )}
                         />
@@ -125,7 +134,6 @@ export default class App extends React.Component {
                                     key={props.match.url}
                                     match={props.match}
                                     history={props.history}
-                                    // ProfilePicClass="profile-pic-large"
                                 />
                             )}
                         />
