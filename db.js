@@ -79,12 +79,14 @@ module.exports.addFriend = (viewedId, userId) => {
 };
 
 module.exports.acceptedFriendship = (viewedId, userId) => {
-    let q = `UPDATE friendships SET accepted='true' WHERE recipient_id=$1 AND sender_id=$2  `;
+    let q = `UPDATE friendships SET accepted='true' WHERE recipient_id=$2 AND sender_id=$1  `;
     let params = [viewedId, userId];
     return db.query(q, params);
 };
 module.exports.deleteTheFriendship = (viewedId, userId) => {
-    let q = `DELETE FROM friendships WHERE recipient_id=$1 AND sender_id=$2  `;
+    let q = `DELETE FROM friendships WHERE 
+    (recipient_id=$1 AND sender_id=$2) OR 
+    (recipient_id = $2 AND sender_id = $1) `;
     let params = [viewedId, userId];
     return db.query(q, params);
 };

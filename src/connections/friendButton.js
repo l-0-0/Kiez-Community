@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "../axios";
-import e from "express";
 
 export default function FriendButton(props) {
     let { viewedId } = props;
-
-    const [buttonText, setButtonText] = useState("add");
-    const [recipientButtonText, setRecipientButtonText] = useState("");
+    const [buttonText, setButtonText] = useState("");
 
     useEffect(() => {
         (async () => {
@@ -19,14 +16,14 @@ export default function FriendButton(props) {
                 let userId = Number(viewedId);
 
                 if (data.length === 0) {
-                    setButtonText("add");
+                    setButtonText("Send a friend request");
                 } else if (data.accepted == true) {
-                    setButtonText("defriend");
+                    setButtonText("You don't deserve my friendship");
                 } else {
-                    if (data[0].sender_id === userId) {
-                        setButtonText("accept");
+                    if (data.sender_id === userId) {
+                        setButtonText("Accept the friendship request");
                     } else {
-                        setButtonText("cancel");
+                        setButtonText("Cancel the friendship request");
                     }
                 }
             } catch (err) {
@@ -39,15 +36,15 @@ export default function FriendButton(props) {
         axios
             .post("/friendship-status", { buttonText, viewedId })
             .then(({ data }) => {
-                console.log("data in friendship **** route", data);
-                if (buttonText == "add") {
-                    setButtonText("cancel");
-                } else if (buttonText == "cancel") {
-                    setButtonText("add");
-                } else if (buttonText == "accept") {
-                    setButtonText("defriend");
-                } else if (buttonText == "defriend") {
-                    setButtonText("add");
+                // console.log("data in friendship **** route", data);
+                if (buttonText == "Send a friend request") {
+                    setButtonText("Cancel the friendship request");
+                } else if (buttonText == "Cancel the friendship request") {
+                    setButtonText("Send a friend request");
+                } else if (buttonText == "Accept the friendship request") {
+                    setButtonText("You don't deserve my friendship");
+                } else if (buttonText == "You don't deserve my friendship") {
+                    setButtonText("Send a friend request");
                 }
             })
             .catch((err) => console.log("error in send friend request: ", err));
@@ -55,7 +52,9 @@ export default function FriendButton(props) {
 
     return (
         <>
-            <button onClick={submit}>{buttonText}</button>
+            <button className="friendship-button" onClick={submit}>
+                {buttonText}
+            </button>
         </>
     );
 }

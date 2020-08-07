@@ -33,7 +33,6 @@ export default class OtherProfile extends React.Component {
         // console.log("state in otherprofile: ", this.state);
         return (
             <>
-                <FriendButton viewedId={this.props.match.params.id} />
                 <div className="profile-container">
                     <img
                         src={this.state.profileImg}
@@ -46,6 +45,7 @@ export default class OtherProfile extends React.Component {
                         <p className="user-bio">{this.state.bio}</p>
                     </div>
                 </div>
+                <FriendButton viewedId={this.props.match.params.id} />
             </>
         );
     }

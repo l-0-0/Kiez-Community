@@ -359,8 +359,8 @@ app.get("/find-people/:userInput", (req, res) => {
 app.get("/api/friendship/:viewedId", (req, res) => {
     db.friendshipStatus(req.params.viewedId, req.session.userId)
         .then((results) => {
-            console.log("results in friendship status", results.rows);
-            res.json(results.rows);
+            // console.log("results in friendship status", results.rows);
+            res.json(results.rows[0]);
         })
         .catch((err) => {
             console.log("error in getting the friendship status", err);
@@ -368,9 +368,9 @@ app.get("/api/friendship/:viewedId", (req, res) => {
 });
 
 app.post("/friendship-status", (req, res) => {
-    console.log("req.body: ", req.body);
+    // console.log("req.body: ", req.body);
 
-    if (req.body.buttonText == "add") {
+    if (req.body.buttonText == "Send a friend request") {
         db.addFriend(req.body.viewedId, req.session.userId)
             .then(() => {
                 res.json({
@@ -380,7 +380,7 @@ app.post("/friendship-status", (req, res) => {
             .catch((err) => {
                 console.log("error in adding a friend", err);
             });
-    } else if (req.body.buttonText == "accept") {
+    } else if (req.body.buttonText == "Accept the friendship request") {
         db.acceptedFriendship(req.body.viewedId, req.session.userId)
             .then(() => {
                 res.json({
@@ -391,8 +391,8 @@ app.post("/friendship-status", (req, res) => {
                 console.log("error in accepting the request", err);
             });
     } else if (
-        req.body.buttonText == "cancel" ||
-        req.body.buttonText == "defriend"
+        req.body.buttonText == "Cancel the friendship request" ||
+        req.body.buttonText == "You don't deserve my friendship"
     ) {
         db.deleteTheFriendship(req.body.viewedId, req.session.userId)
             .then(() => {
