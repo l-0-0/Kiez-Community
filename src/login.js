@@ -35,7 +35,7 @@ export default class Login extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="forms">
                 {this.state.error && (
                     <div className="error">
                         Something went wrong! Please try again.

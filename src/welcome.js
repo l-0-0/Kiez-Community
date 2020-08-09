@@ -21,13 +21,6 @@ export default function Welcome(props) {
                 <Route exact path="/" component={Registration} />
                 <Route path="/login" component={Login} />
                 <Route path="/reset" component={ResetPassword} />
-
-                <div className="welcome-link">
-                    <p>Are you already a member?</p>
-
-                    <Link to="/login"> Log in </Link>
-                    <Link to="/reset"> Reset the password! </Link>
-                </div>
             </div>
         </HashRouter>
     );

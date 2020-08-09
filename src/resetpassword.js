@@ -53,24 +53,27 @@ export default class ResetPassword extends React.Component {
         const { step } = this.state;
         if (step == 1) {
             return (
-                <div>
-                    <h4>Reset Password</h4>
-                    <p>
-                        Please enter the email address with which you registered
-                    </p>
-                    <input
-                        onChange={(e) => this.handleChange(e)}
-                        name="email"
-                        placeholder="Email Address"
-                        id="email"
-                    />
-                    <button onClick={() => this.submit()}>Submit</button>
+                <div className="welcome-page">
+                    <div className="forms">
+                        <h3>Reset Password</h3>
+                        <p>
+                            Please enter the email address with which you
+                            registered
+                        </p>
+                        <input
+                            onChange={(e) => this.handleChange(e)}
+                            name="email"
+                            placeholder="Email Address"
+                            id="email"
+                        />
+                        <button onClick={() => this.submit()}>Submit</button>
+                    </div>
                 </div>
             );
         } else if (step == 2) {
             return (
-                <div>
-                    <h4>Reset Password</h4>
+                <div className="forms">
+                    <h3>Reset Password</h3>
                     <p>Please enter the code you received</p>
                     <input
                         onChange={(e) => this.handleChange(e)}
@@ -88,12 +91,12 @@ export default class ResetPassword extends React.Component {
             );
         } else {
             return (
-                <div>
-                    <h4>You successfully reset your password</h4>
-                    <p>
+                <div className="forms">
+                    <h3>You successfully reset your password</h3>
+                    <h4>
                         You can
-                        <Link to="/login">login</Link>with your new password!
-                    </p>
+                        <Link to="/login"> login </Link> with your new password!
+                    </h4>
                 </div>
             );
         }
