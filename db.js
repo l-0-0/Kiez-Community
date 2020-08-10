@@ -90,3 +90,13 @@ module.exports.deleteTheFriendship = (viewedId, userId) => {
     let params = [viewedId, userId];
     return db.query(q, params);
 };
+
+module.exports.getFriendsAndPotentials = (userId) => {
+    let q = `SELECT users.id, first, last, profile_pic, accepted
+            FROM friendships JOIN users
+            ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)
+            OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+            OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)`;
+    let params = [userId];
+    return db.query(q, params);
+};

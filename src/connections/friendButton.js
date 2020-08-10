@@ -18,7 +18,7 @@ export default function FriendButton(props) {
                 if (data.length === 0) {
                     setButtonText("Send a friend request");
                 } else if (data.accepted == true) {
-                    setButtonText("You don't deserve my friendship");
+                    setButtonText("Put an end to this friendship");
                 } else {
                     if (data.sender_id === userId) {
                         setButtonText("Accept the friendship request");
@@ -42,8 +42,8 @@ export default function FriendButton(props) {
                 } else if (buttonText == "Cancel the friendship request") {
                     setButtonText("Send a friend request");
                 } else if (buttonText == "Accept the friendship request") {
-                    setButtonText("You don't deserve my friendship");
-                } else if (buttonText == "You don't deserve my friendship") {
+                    setButtonText("Put an end to this friendship");
+                } else if (buttonText == "Put an end to this friendship") {
                     setButtonText("Send a friend request");
                 }
             })

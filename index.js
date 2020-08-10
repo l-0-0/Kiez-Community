@@ -392,7 +392,7 @@ app.post("/friendship-status", (req, res) => {
             });
     } else if (
         req.body.buttonText == "Cancel the friendship request" ||
-        req.body.buttonText == "You don't deserve my friendship"
+        req.body.buttonText == "Put an end to this friendship"
     ) {
         db.deleteTheFriendship(req.body.viewedId, req.session.userId)
             .then(() => {
@@ -404,6 +404,44 @@ app.post("/friendship-status", (req, res) => {
                 console.log("error in deleting the request", err);
             });
     }
+});
+
+app.get("/api/friends", (req, res) => {
+    // console.log("req.session.userId", req.session.userId);
+    db.getFriendsAndPotentials(req.session.userId)
+        .then((results) => {
+            // console.log("results.rows", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("error in getting friends and wannabes: ", err);
+        });
+});
+
+app.post("/end-friendship", (req, res) => {
+    // console.log(req.body.friendsId, req.session.userId);
+    db.deleteTheFriendship(req.body.friendsId, req.session.userId)
+        .then(() => {
+            res.json({
+                success: true,
+            });
+        })
+        .catch((err) => {
+            console.log("error in deleting the request", err);
+        });
+});
+
+app.post("/accept-friendship", (req, res) => {
+    // console.log(req.body.personsId, req.session.userId);
+    db.acceptedFriendship(req.body.personsId, req.session.userId)
+        .then(() => {
+            res.json({
+                success: true,
+            });
+        })
+        .catch((err) => {
+            console.log("error in accepting the request", err);
+        });
 });
 
 app.get("/logout", (req, res) => {
