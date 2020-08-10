@@ -273,3 +273,25 @@ button:hover {
 .label:hover {
     color: #fc2f00;
 }
+
+.requests {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.requests img {
+    height: 230px;
+    width: 230px;
+    object-fit: fill;
+}
+
+.friends h2 {
+    margin-left: 2rem;
+    margin-top: 40px;
+    text-decoration: underline;
+    font-family: "Paytone One", sans-serif;
+    font-size: 35px;
+}
