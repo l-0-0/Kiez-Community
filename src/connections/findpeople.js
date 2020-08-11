@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "../axios";
+import { Link } from "react-router-dom";
 
 export default function FindPeople() {
     const [people, setPeople] = useState([]);
@@ -49,24 +50,27 @@ export default function FindPeople() {
         <Fragment>
             <div>
                 <input
-                    className="input-field"
+                    id="input-field"
                     onChange={handleChange}
                     value={userInput}
                     name="finding"
+                    placeholder="Search for friends!"
                 />
             </div>
-            <div>
+            <div className="find-user">
                 {error && <p>There is no user based on your search!</p>}
                 {people &&
                     people.map((eachPerson, id) => {
                         return (
-                            <div key={id} className="find-user">
+                            <div key={id}>
                                 <img
                                     className="find-user"
                                     src={eachPerson.profile_pic}
                                 />
                                 <p>
-                                    {eachPerson.first} {eachPerson.last}
+                                    <Link to={`/user/${eachPerson.id}`}>
+                                        {eachPerson.first} {eachPerson.last}
+                                    </Link>
                                 </p>
                             </div>
                         );

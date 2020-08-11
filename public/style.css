@@ -150,32 +150,38 @@ h4 {
 }
 
 .find-user {
-    height: 200px;
-    margin-left: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    grid-gap: 1rem;
+    margin-left: 3rem;
+    justify-content: center;
+    text-align: center;
 }
 
 .find-user img {
-    height: 150px;
-    width: 150px;
-
+    height: 230px;
+    width: 230px;
+    object-fit: fill;
     border-radius: 5px;
 }
 
 .find-user p {
-    margin-left: 20px;
+    margin-left: 4rem;
     font-weight: bold;
-    padding-top: 3rem;
+    padding-bottom: 2rem;
+
+    align-self: center;
+    width: 200px;
 }
 
-.input-field {
-    margin: 20px;
-    height: 30px;
-    width: 200px;
-    font-size: 15px;
+#input-field {
+    margin-left: 6rem;
+    margin-bottom: 4rem;
+    height: 40px;
+    width: 250px;
+    font-size: 20px;
     text-align: center;
+    border-radius: 5px;
 }
 
 button {

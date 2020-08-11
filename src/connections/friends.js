@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axios from "../axios";
+import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,7 +36,9 @@ export default function Friends() {
                                 <div key={id}>
                                     <img src={eachFriend.profile_pic} />
                                     <h4>
-                                        {eachFriend.first} {eachFriend.last}
+                                        <Link to={`/user/${eachFriend.id}`}>
+                                            {eachFriend.first} {eachFriend.last}
+                                        </Link>
                                     </h4>
                                     <button
                                         onClick={() =>
@@ -58,7 +60,9 @@ export default function Friends() {
                                 <div key={id}>
                                     <img src={eachOne.profile_pic} />
                                     <h4>
-                                        {eachOne.first} {eachOne.last}
+                                        <Link to={`/user/${eachOne.id}`}>
+                                            {eachOne.first} {eachOne.last}
+                                        </Link>
                                     </h4>
                                     <button
                                         onClick={() =>
