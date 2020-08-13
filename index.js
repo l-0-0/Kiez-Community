@@ -22,12 +22,19 @@ app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
-app.use(
-    cookieSession({
-        secret: "let it be.",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
+
+const cookieSessionMiddleware = cookieSession({
+    secret: "let it be.",
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
 app.use(express.json());
 //it has to be after cookie session and urlencoded
 app.use(csurf());
@@ -458,6 +465,42 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(8080, function () {
+io.on("connection", (socket) => {
+    console.log(`socket with the id ${socket.id} is now CONNECTED`);
+    console.log("socket.session: ", socket.request.session);
+
+    // userId is the id of the user who sent the chat message
+    const { userId } = socket.request.session;
+
+    if (!userId) {
+        return socket.disconnect();
+    }
+
+    socket.on("disconnect", function () {
+        console.log(`socket with the id ${socket.id} is now DISCONNECTED`);
+    });
+
+    db.getChats()
+        .then((results) => {
+            // console.log("results.rows", results.rows);
+            let msgs = results.rows;
+
+            socket.emit("recentChatMessages", msgs);
+        })
+        .catch((err) => {
+            console.log("error in getting messages: ", err);
+        });
+
+    socket.on("chatMessage", async (data) => {
+        await db.insertChats(data, userId);
+        let { rows } = await db.getChatSender(userId);
+        rows[0].message = data;
+        // console.log("rows: ", rows);
+        //send the mesage to all the users
+        io.sockets.emit("chatMessage", rows);
+    });
+});
+
+server.listen(8080, function () {
     console.log("I'm listening.");
 });

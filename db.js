@@ -100,3 +100,33 @@ module.exports.getFriendsAndPotentials = (userId) => {
     let params = [userId];
     return db.query(q, params);
 };
+
+module.exports.insertChats = (message, userId) => {
+    let q = `INSERT INTO chat_messages (message, sender_id) 
+    VALUES($1, $2) RETURNING *`;
+    let params = [message, userId];
+    return db.query(q, params);
+};
+
+module.exports.getChats = () => {
+    let q = `SELECT first, last, message, profile_pic, sender_id
+             FROM users JOIN chat_messages ON users.id = chat_messages.sender_id
+             ORDER BY chat_messages.id DESC LIMIT 10`;
+
+    return db.query(q);
+};
+
+module.exports.getChatSender = (senderId) => {
+    let q = `SELECT * FROM users WHERE id =$1`;
+
+    let params = [senderId];
+    return db.query(q, params);
+};
+
+// module.exports.getChatSender = (senderId) => {
+//     let q = `SELECT * FROM users JOIN chat_messages ON
+//             (users.id = $1 AND chat_messages.sender_id =$1)
+//              ORDER BY chat_messages.created_at DESC LIMIT 1`;
+//     let params = [senderId];
+//     return db.query(q, params);
+// };

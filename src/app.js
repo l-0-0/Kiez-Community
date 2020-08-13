@@ -8,6 +8,7 @@ import OtherProfile from "./otherprofile";
 import FindPeople from "./connections/findpeople";
 import { BrowserRouter, Route } from "react-router-dom";
 import Friends from "./connections/friends";
+import Chat from "./connections/chats";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -139,6 +140,7 @@ export default class App extends React.Component {
                             )}
                         />
                         <Route path="/friends" component={Friends} />
+                        <Route path="/chats" component={Chat} />
                     </div>
                 </Fragment>
             </BrowserRouter>

@@ -9,6 +9,8 @@ import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./connections/reducer";
 
+import { init } from "./connections/socket";
+
 //creating store
 const store = createStore(
     reducer,
@@ -25,6 +27,7 @@ if (isLoggedIn) {
             <App />
         </Provider>
     );
+    init(store);
 } else {
     elem = <Welcome />;
 }

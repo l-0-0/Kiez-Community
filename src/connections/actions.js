@@ -24,3 +24,19 @@ export async function acceptFriendRequest(personsId) {
         acceptedId: personsId,
     };
 }
+
+export async function chatMessages(msgs) {
+    console.log("messages in the action: ", msgs);
+    return {
+        type: "RECEIVE_RECENT_CHATS",
+        recentChats: msgs,
+    };
+}
+
+export async function chatMessage(msg) {
+    console.log("new message in the action: ", msg);
+    return {
+        type: "SENDING_SINGLE_CHATS",
+        recentChats: msg,
+    };
+}
