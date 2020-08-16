@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { socket } from "./socket";
@@ -6,11 +6,23 @@ import { socket } from "./socket";
 export default function Chat() {
     const [chatMessage, setChatMessage] = useState();
     const recentChats = useSelector((state) => state.chatMessages);
-    console.log("recentChats", recentChats);
+
+    const elemRef = useRef();
+
+    useEffect(() => {
+        elemRef.current.scrollTop =
+            elemRef.current.scrollHeight - elemRef.current.clientHeight;
+    });
+
+    function sendMessage(e) {
+        socket.emit("chatMessage", chatMessage);
+        document.querySelector("textarea").value = "";
+        // chat.value = "";
+    }
 
     return (
         <>
-            <div className="chat-area">
+            <div className="chat-area" ref={elemRef}>
                 {recentChats &&
                     recentChats.map((chat, id) => {
                         return (
@@ -21,7 +33,6 @@ export default function Chat() {
                                         {chat.first} {chat.last}
                                     </Link>
                                 </h4>
-
                                 <p>{chat.created_at}</p>
                                 <p>{chat.message}</p>
                             </div>
@@ -29,10 +40,11 @@ export default function Chat() {
                     })}
             </div>
             <textarea
-                name="textarea"
+                className="chat_textarea"
+                id="chat"
                 onChange={(e) => setChatMessage(e.target.value)}
             ></textarea>
-            <button onClick={() => socket.emit("chatMessage", chatMessage)}>
+            <button className="chat-send" onClick={(e) => sendMessage(e)}>
                 Send
             </button>
         </>

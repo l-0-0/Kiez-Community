@@ -2,6 +2,7 @@
 --psql social_network -f sql/users.sql
 
 DROP TABLE IF EXISTS chat_messages;
+DROP TABLE IF EXISTS wall_post;
 DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS password_reset_codes;
@@ -37,5 +38,15 @@ CREATE TABLE chat_messages(
     id SERIAL PRIMARY KEY,
     message VARCHAR NOT NULL CHECK (message <> ''),
     sender_id INT NOT NULL REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE wall_post(
+    id SERIAL PRIMARY KEY,
+    post VARCHAR,
+    sender_id INT NOT NULL REFERENCES users(id),
+    recipient_id INT NOT NULL REFERENCES users(id),
+    image VARCHAR,
+    link VARCHAR,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

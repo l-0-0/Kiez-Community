@@ -28,7 +28,7 @@ export default class Uploader extends React.Component {
                 //when the data is back we call the function from the parent
                 //the arg comes from the server!
                 this.props.showTheImage(data.profile_pic);
-                console.log(data);
+                // console.log(data);
             })
             .catch(() =>
                 this.setState({

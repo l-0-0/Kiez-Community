@@ -11,8 +11,6 @@ export default function FriendButton(props) {
             try {
                 const { data } = await axios.get("/api/friendship/" + viewedId);
 
-                console.log("data in friendbutton route", data);
-
                 let userId = Number(viewedId);
 
                 if (data.length === 0) {

@@ -1,7 +1,7 @@
 Need to change:
-1. make the input fields empty after entering the information --> email
+1. make the input fields empty after entering the information --> email, chat
 2. add class in react way
-3. logout link
+
 
 
 read about again:

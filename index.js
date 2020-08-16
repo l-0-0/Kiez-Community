@@ -451,6 +451,74 @@ app.post("/accept-friendship", (req, res) => {
         });
 });
 
+app.get("/wall-posts/:viewedId", (req, res) => {
+    console.log("req.params.viewedId", req.params.viewedId);
+    db.friendshipStatus(req.params.viewedId, req.session.userId)
+        .then((results) => {
+            if (results.rows.length) {
+                db.receivePosts(req.params.viewedId)
+                    .then((results) => {
+                        // console.log("results.rows: ", results.rows);
+                        res.json(results.rows);
+                    })
+                    .catch((err) => {
+                        console.log("error in getting the posts", err);
+                    });
+            } else {
+                res.json({ success: false });
+            }
+        })
+        .catch((err) => {
+            console.log("error in getting the friendship status", err);
+        });
+});
+
+app.post("/publish-post", (req, res) => {
+    // console.log(req.body.inputs);
+    db.insertPosts(req.body.inputs, req.body.viewedId, req.session.userId)
+        .then((results) => {
+            // console.log("results.rows", results.rows);
+            let postMessage = results.rows[0];
+            db.getChatSender(req.session.userId)
+                .then((userInfo) => {
+                    userInfo.rows[0].post = postMessage.post;
+                    userInfo.rows[0].created_at = postMessage.created_at;
+                    res.json(userInfo.rows[0]);
+                })
+
+                .catch((err) => {
+                    console.log("error in get the poster by id", err);
+                });
+        })
+        .catch((err) => {
+            console.log("error in inserting the posts", err);
+        });
+});
+
+app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
+    const { filename } = req.file;
+    const url = s3Url + filename;
+    db.postImage(req.session.userId, url)
+        .then((results) => {
+            console.log("results.rows add image", results.rows[0]);
+            let postImage = results.rows[0];
+            db.getChatSender(req.session.userId)
+                .then((userInfo) => {
+                    userInfo.rows[0].image = postImage.image;
+                    userInfo.rows[0].created_at = postImage.created_at;
+                    console.log("results.rows", userInfo.rows[0]);
+                    res.json(userInfo.rows[0]);
+                })
+
+                .catch((err) => {
+                    console.log("error in get the poster by id", err);
+                });
+        })
+        .catch((err) => {
+            console.log("error in post the image", err);
+        });
+});
+
 app.get("/logout", (req, res) => {
     req.session.userId = null;
     console.log("your're logged out");
@@ -466,8 +534,8 @@ app.get("*", function (req, res) {
 });
 
 io.on("connection", (socket) => {
-    console.log(`socket with the id ${socket.id} is now CONNECTED`);
-    console.log("socket.session: ", socket.request.session);
+    // console.log(`socket with the id ${socket.id} is now CONNECTED`);
+    // console.log("socket.session: ", socket.request.session);
 
     // userId is the id of the user who sent the chat message
     const { userId } = socket.request.session;
@@ -476,9 +544,9 @@ io.on("connection", (socket) => {
         return socket.disconnect();
     }
 
-    socket.on("disconnect", function () {
-        console.log(`socket with the id ${socket.id} is now DISCONNECTED`);
-    });
+    // socket.on("disconnect", function () {
+    //     console.log(`socket with the id ${socket.id} is now DISCONNECTED`);
+    // });
 
     db.getChats()
         .then((results) => {
@@ -492,9 +560,12 @@ io.on("connection", (socket) => {
         });
 
     socket.on("chatMessage", async (data) => {
-        await db.insertChats(data, userId);
+        let { rows: chatRows } = await db.insertChats(data, userId);
+        // console.log("chatRows", chatRows);
         let { rows } = await db.getChatSender(userId);
         rows[0].message = data;
+        rows[0].created_at = chatRows[0].created_at;
+
         // console.log("rows: ", rows);
         //send the mesage to all the users
         io.sockets.emit("chatMessage", rows);

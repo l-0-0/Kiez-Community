@@ -108,6 +108,12 @@ export default class App extends React.Component {
                                 <li>
                                     <a href="/">My Profile</a>
                                 </li>
+                                <li>
+                                    <a href="/friends">Friends</a>
+                                </li>
+                                <li>
+                                    <a href="/chats">Chats</a>
+                                </li>
                             </ul>
                         </div>
                     </header>

@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import axios from "./axios";
 import FriendButton from "./connections/friendButton";
+import WallPosts from "./connections/wallpost";
 
 export default class OtherProfile extends React.Component {
     constructor(props) {
@@ -46,6 +47,7 @@ export default class OtherProfile extends React.Component {
                     </div>
                 </div>
                 <FriendButton viewedId={this.props.match.params.id} />
+                <WallPosts viewedId={this.props.match.params.id} />
             </>
         );
     }

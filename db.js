@@ -66,8 +66,8 @@ module.exports.getSearchedPeople = (input) => {
 
 module.exports.friendshipStatus = (viewedId, userId) => {
     let q = `SELECT * FROM friendships
-  WHERE (recipient_id = $1 AND sender_id = $2)
-  OR (recipient_id = $2 AND sender_id = $1)`;
+            WHERE (recipient_id = $1 AND sender_id = $2)
+            OR (recipient_id = $2 AND sender_id = $1)`;
     let params = [viewedId, userId];
     return db.query(q, params);
 };
@@ -111,7 +111,7 @@ module.exports.insertChats = (message, userId) => {
 module.exports.getChats = () => {
     let q = `SELECT first, last, message, profile_pic, sender_id
              FROM users JOIN chat_messages ON users.id = chat_messages.sender_id
-             ORDER BY chat_messages.id DESC LIMIT 10`;
+             ORDER BY chat_messages.id ASC LIMIT 10`;
 
     return db.query(q);
 };
@@ -123,10 +123,32 @@ module.exports.getChatSender = (senderId) => {
     return db.query(q, params);
 };
 
-// module.exports.getChatSender = (senderId) => {
-//     let q = `SELECT * FROM users JOIN chat_messages ON
-//             (users.id = $1 AND chat_messages.sender_id =$1)
-//              ORDER BY chat_messages.created_at DESC LIMIT 1`;
-//     let params = [senderId];
-//     return db.query(q, params);
-// };
+module.exports.receivePosts = (viewedId) => {
+    let q = `SELECT wall_post.id, sender_id, recipient_id, wall_post.image, post,
+    first, last, profile_pic, users.id AS "userId" FROM wall_post JOIN users
+            ON wall_post.sender_id = users.id WHERE 
+            wall_post.recipient_id = $1 ORDER BY wall_post.id DESC LIMIT 20`;
+    let params = [viewedId];
+    return db.query(q, params);
+};
+
+module.exports.insertPosts = (post, viewedId, userId) => {
+    let q = `INSERT INTO wall_post (post, recipient_id, sender_id) 
+    VALUES($1, $2, $3) RETURNING *`;
+    let params = [post, viewedId, userId];
+    return db.query(q, params);
+};
+
+module.exports.getPosterById = (userId) => {
+    let q = `SELECT * FROM users JOIN wall_post
+            ON wall_post.sender_id = users.id WHERE users.id = $1
+           `;
+    let params = [userId];
+    return db.query(q, params);
+};
+
+module.exports.postImage = (userId, url) => {
+    let q = `UPDATE wall_post SET image = $2 WHERE sender_id=$1 RETURNING *`;
+    let params = [userId, url];
+    return db.query(q, params);
+};

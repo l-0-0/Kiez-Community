@@ -1,5 +1,3 @@
-import { chatMessages } from "./actions";
-
 export default function reducer(state = {}, action) {
     if (action.type == "RECEIVE_FRIENDSWANNABES") {
         state = {
