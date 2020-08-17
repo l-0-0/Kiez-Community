@@ -109,7 +109,7 @@ module.exports.insertChats = (message, userId) => {
 };
 
 module.exports.getChats = () => {
-    let q = `SELECT first, last, message, profile_pic, sender_id
+    let q = `SELECT first, last, message, profile_pic, sender_id, chat_messages.created_at AS created_at
              FROM users JOIN chat_messages ON users.id = chat_messages.sender_id
              ORDER BY chat_messages.id ASC LIMIT 10`;
 
@@ -125,7 +125,7 @@ module.exports.getChatSender = (senderId) => {
 
 module.exports.receivePosts = (viewedId) => {
     let q = `SELECT wall_post.id, sender_id, recipient_id, wall_post.image, post,
-    first, last, profile_pic, users.id AS "userId" FROM wall_post JOIN users
+    first, last, profile_pic, wall_post.created_at AS created_at, users.id AS "userId" FROM wall_post JOIN users
             ON wall_post.sender_id = users.id WHERE 
             wall_post.recipient_id = $1 ORDER BY wall_post.id DESC LIMIT 20`;
     let params = [viewedId];
@@ -147,8 +147,8 @@ module.exports.getPosterById = (userId) => {
     return db.query(q, params);
 };
 
-module.exports.postImage = (userId, url) => {
-    let q = `UPDATE wall_post SET image = $2 WHERE sender_id=$1 RETURNING *`;
-    let params = [userId, url];
+module.exports.postImage = (userId, url, viewedId) => {
+    let q = `INSERT INTO wall_post (image, sender_id,recipient_id) VALUES($2, $1, $3) RETURNING *`;
+    let params = [userId, url, viewedId];
     return db.query(q, params);
 };

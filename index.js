@@ -364,6 +364,12 @@ app.get("/find-people/:userInput", (req, res) => {
 });
 
 app.get("/api/friendship/:viewedId", (req, res) => {
+    if (req.params.viewedId == req.session.userId) {
+        res.json({
+            accepted: true,
+        });
+        return;
+    }
     db.friendshipStatus(req.params.viewedId, req.session.userId)
         .then((results) => {
             // console.log("results in friendship status", results.rows);
@@ -452,26 +458,26 @@ app.post("/accept-friendship", (req, res) => {
 });
 
 app.get("/wall-posts/:viewedId", (req, res) => {
-    console.log("req.params.viewedId", req.params.viewedId);
-    db.friendshipStatus(req.params.viewedId, req.session.userId)
+    // console.log("req.params.viewedId", req.params.viewedId);
+    // db.friendshipStatus(req.params.viewedId, req.session.userId)
+    //     .then((results) => {
+    //         if (results.rows.length) {
+    db.receivePosts(req.params.viewedId)
         .then((results) => {
-            if (results.rows.length) {
-                db.receivePosts(req.params.viewedId)
-                    .then((results) => {
-                        // console.log("results.rows: ", results.rows);
-                        res.json(results.rows);
-                    })
-                    .catch((err) => {
-                        console.log("error in getting the posts", err);
-                    });
-            } else {
-                res.json({ success: false });
-            }
+            // console.log("results.rows: ", results.rows);
+            res.json(results.rows);
         })
         .catch((err) => {
-            console.log("error in getting the friendship status", err);
+            console.log("error in getting the posts", err);
         });
+    // } else {
+    //     res.json({ success: false });
+    // }
 });
+// .catch((err) => {
+//     console.log("error in getting the friendship status", err);
+// });
+// });
 
 app.post("/publish-post", (req, res) => {
     // console.log(req.body.inputs);
@@ -495,29 +501,34 @@ app.post("/publish-post", (req, res) => {
         });
 });
 
-app.post("/post-image", uploader.single("file"), s3.upload, (req, res) => {
-    const { filename } = req.file;
-    const url = s3Url + filename;
-    db.postImage(req.session.userId, url)
-        .then((results) => {
-            console.log("results.rows add image", results.rows[0]);
-            let postImage = results.rows[0];
-            db.getChatSender(req.session.userId)
-                .then((userInfo) => {
-                    userInfo.rows[0].image = postImage.image;
-                    userInfo.rows[0].created_at = postImage.created_at;
-                    console.log("results.rows", userInfo.rows[0]);
-                    res.json(userInfo.rows[0]);
-                })
+app.post(
+    "/post-image/:viewedId",
+    uploader.single("file"),
+    s3.upload,
+    (req, res) => {
+        const { filename } = req.file;
+        const url = s3Url + filename;
+        db.postImage(req.session.userId, url, req.params.viewedId)
+            .then((results) => {
+                // console.log("results.rows add image", results.rows[0]);
+                let postImage = results.rows[0];
+                db.getChatSender(req.session.userId)
+                    .then((userInfo) => {
+                        userInfo.rows[0].image = postImage.image;
+                        userInfo.rows[0].created_at = postImage.created_at;
+                        console.log("results.rows", userInfo.rows[0]);
+                        res.json(userInfo.rows[0]);
+                    })
 
-                .catch((err) => {
-                    console.log("error in get the poster by id", err);
-                });
-        })
-        .catch((err) => {
-            console.log("error in post the image", err);
-        });
-});
+                    .catch((err) => {
+                        console.log("error in get the poster by id", err);
+                    });
+            })
+            .catch((err) => {
+                console.log("error in post the image", err);
+            });
+    }
+);
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;

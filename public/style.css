@@ -87,7 +87,7 @@ h4 {
 .navbar li {
     float: right;
     display: inline;
-    font-size: 20px;
+    font-size: 17px;
     height: 30px;
     margin-top: 5rem;
     font-weight: bold;
@@ -96,13 +96,14 @@ h4 {
 .navbar li a {
     color: #2f4858;
     text-align: center;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-right: 15px;
+    padding-left: 15px;
     padding-bottom: 10px;
     padding-top: 10px;
     border-radius: 5px;
     transition: 0.3s;
     border: none;
+    font-family: "Paytone One", sans-serif;
 }
 .navbar li a:hover {
     background-color: #fc2f00;
@@ -117,6 +118,8 @@ h4 {
     margin-top: 15px;
     border-radius: 10px;
     margin-left: 20px;
+    object-fit: cover;
+    object-position: top;
 }
 
 .logo-small {
@@ -132,7 +135,7 @@ h4 {
     object-fit: cover;
     object-position: top;
     border-radius: 10px;
-    box-shadow: 0px 3px 7px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: -6px 4px 7px 10px rgba(0, 0, 0, 0.3);
     /* border: 5px solid #2f4858; */
 }
 
@@ -147,7 +150,7 @@ h4 {
 .user-info {
     margin-left: 20px;
     margin-top: 25px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .user-name {
@@ -169,8 +172,10 @@ h4 {
 .find-user img {
     height: 230px;
     width: 230px;
-    object-fit: fill;
+    object-fit: cover;
+    object-position: top;
     border-radius: 5px;
+    box-shadow: -6px 4px 7px 10px rgba(0, 0, 0, 0.3);
 }
 
 .find-user p {
@@ -189,7 +194,7 @@ h4 {
     width: 250px;
     font-size: 20px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 button {
@@ -214,13 +219,16 @@ button:hover {
 }
 
 .title {
-    margin-left: 6rem;
+    margin-left: 13rem;
 }
 
 .show-bio {
     width: 350px;
-    padding: 5rem;
+    /* padding: 3rem; */
     font-size: 20px;
+    font-weight: 200;
+    margin-left: 20px;
+    margin-top: 25px;
 }
 
 .show-bio button {
@@ -229,18 +237,19 @@ button:hover {
 .textarea-box {
     margin-top: -2rem;
     width: 350px;
-    padding: 5rem;
 
+    padding: 20px;
+    border-radius: 10px;
     font-size: 15px;
-    /* padding: 0; */
 }
 
 .textarea-box textarea {
-    margin-top: -2rem;
+    margin-top: 2rem;
     width: 350px;
     height: 150px;
     font-size: 15px;
-    padding: 0;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .textarea-box button {
@@ -297,9 +306,12 @@ button:hover {
 }
 
 .requests img {
-    height: 230px;
-    width: 230px;
-    object-fit: fill;
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 10px;
+    box-shadow: -6px 4px 7px 10px rgba(0, 0, 0, 0.3);
 }
 
 .friends h2 {
@@ -313,7 +325,7 @@ button:hover {
 .chat-area {
     width: 70%;
     max-height: 400px;
-    border: 4px #2f4858 solid;
+    /* border: 4px #2f4858 solid; */
     overflow-y: scroll;
     margin-left: 13%;
 }
@@ -324,9 +336,13 @@ button:hover {
 }
 
 #chat-text {
+    min-height: 150px;
+    border: 2px solid #2f4858;
+    border-radius: 10px;
     display: flex;
-    flex-direction: row;
-    margin: 20px;
+    margin-top: 20px;
+    width: 90%;
+    margin-left: 30px;
 }
 
 /* #chat-text h4,
@@ -334,38 +350,86 @@ p {
     margin-left: 20px;
 } */
 
-#chat-text h4 {
-    width: 40%;
-}
-
 .chat_textarea {
-    width: 70%;
+    width: 62%;
     height: 150px;
     font-size: 15px;
-    padding: 0;
-    margin-left: 13%;
+    padding: 20px;
+    margin-left: 15%;
     border: 4px #2f4858 solid;
     margin-top: 20px;
+    border-radius: 10px;
 }
 
 .chat-send {
     margin-left: 40%;
 }
 
+/* #chat {
+    font-size: 20px;
+    margin-left: 20px;
+} */
+
 .post-area {
-    width: 100%px;
+    width: 100%;
     max-height: 500px;
-    /* border: 4px #2f4858 solid; */
     overflow-y: scroll;
+}
+
+.each-post {
+    min-height: 100px;
+    border: 2px solid #2f4858;
+    border-radius: 10px;
+    display: flex;
+    margin-top: 20px;
+    width: 600px;
+    margin-left: 30px;
+}
+#sender-p img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    margin: 10px;
+}
+#sender-p p {
+    margin: 10px;
+    font-weight: bold;
 }
 
 .post {
     width: 55%;
     float: right;
-    border-left: 3px #2f4858 solid;
-    margin-top: -27rem;
+    /* border-left: 3px #2f4858 solid; */
+    margin-top: -28rem;
+}
+.post-message {
+    display: block;
+    margin-top: 4rem;
 }
 
 .friendship-button {
     margin-left: 9rem;
+}
+
+.post-textarea {
+    margin-top: -2rem;
+    width: 600px;
+    height: 150px;
+    font-size: 20px;
+    padding: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+
+#posting {
+    font-size: 20px;
+    margin-left: 20px;
+}
+#posting img {
+    border-radius: 5px;
+    max-width: 430px;
+}
+
+#date {
+    font-size: 12px;
 }

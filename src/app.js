@@ -29,6 +29,7 @@ export default class App extends React.Component {
                 if (data) {
                     this.setState(
                         {
+                            id: data.id,
                             first: data.first,
                             last: data.last,
                             profileImg: data.profile_pic,

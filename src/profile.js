@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
 import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
+import WallPosts from "./connections/wallpost";
 
 export default function Profile(props) {
-    let { first, last, profileImg, bio, updateTheBio, toggleModal } = props;
+    let { first, last, profileImg, bio, updateTheBio, toggleModal, id } = props;
 
     return (
         <Fragment>
@@ -25,6 +26,7 @@ export default function Profile(props) {
                     updateTheBio={updateTheBio}
                 />
             </div>
+            {id && <WallPosts viewedId={id} />}
         </Fragment>
     );
 }

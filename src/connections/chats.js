@@ -27,14 +27,18 @@ export default function Chat() {
                     recentChats.map((chat, id) => {
                         return (
                             <div id="chat-text" key={id}>
-                                <img src={chat.profile_pic} />
-                                <h4>
-                                    <Link to={`/user/${chat.sender_id}`}>
-                                        {chat.first} {chat.last}
-                                    </Link>
-                                </h4>
-                                <p>{chat.created_at}</p>
-                                <p>{chat.message}</p>
+                                <div id="sender-p">
+                                    <img src={chat.profile_pic} />
+                                    <p>
+                                        <Link to={`/user/${chat.sender_id}`}>
+                                            {chat.first} {chat.last}
+                                        </Link>
+                                    </p>
+                                </div>
+                                <div id="posting">
+                                    <p id="date">at {chat.created_at}:</p>
+                                    <p id="chat">{chat.message}</p>
+                                </div>
                             </div>
                         );
                     })}

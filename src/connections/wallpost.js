@@ -16,6 +16,7 @@ export default function WallPosts(props) {
                 const { data: friendship } = await axios.get(
                     "/api/friendship/" + viewedId
                 );
+                // console.log("friendship", friendship);
 
                 if (friendship.accepted == true) {
                     setFriendship(true);
@@ -35,35 +36,45 @@ export default function WallPosts(props) {
         formData.append("file", file);
         if (file) {
             axios
-                .post("/post-image", formData)
+                .post("/post-image/" + viewedId, formData)
                 .then(({ data }) => {
                     // console.log("data from post image", data);
                     setPosts([data, ...posts]);
+                    setFile(null);
                 })
                 .catch((err) => console.log("error in post an image: ", err));
         } else {
-            axios
-                .post("/publish-post", { inputs, viewedId })
-                .then(({ data }) => {
-                    // console.log("data in publish post route", data);
-                    setPosts([data, ...posts]);
-                })
-                .catch((err) =>
-                    console.log("error in publish post route: ", err)
-                );
-            document.querySelector("textarea").value = "";
+            if (document.querySelector("textarea").value == "") {
+                setInputs("");
+            } else {
+                axios
+                    .post("/publish-post", { inputs, viewedId })
+                    .then(({ data }) => {
+                        // console.log("data in publish post route", data);
+                        setPosts([data, ...posts]);
+                    })
+                    .catch((err) =>
+                        console.log("error in publish post route: ", err)
+                    );
+                document.querySelector("textarea").value = "";
+                setInputs("");
+            }
         }
-        setFile(null);
-        setInputs("");
     }
 
     return (
         <>
             <div className="post">
                 {friendship && (
-                    <div className="profile-container">
-                        <label className="label">
-                            Post a photo
+                    <div className="post-message">
+                        <textarea
+                            className="post-textarea"
+                            name="textarea"
+                            placeholder="Write something here for me!"
+                            onChange={(e) => setInputs(e.target.value)}
+                        ></textarea>
+                        <label className="label" id="post-label">
+                            Or post me an interesting photo!
                             <input
                                 className="files"
                                 onChange={(e) => setFile(e.target.files[0])}
@@ -72,30 +83,30 @@ export default function WallPosts(props) {
                                 accept="image/*"
                             ></input>
                         </label>
-                        <textarea
-                            name="textarea"
-                            placeholder="Post something here!"
-                            onChange={(e) => setInputs(e.target.value)}
-                        ></textarea>
+
                         <button onClick={postMessage}>Post</button>
                     </div>
                 )}
-                <div>
+                <div className="post-area">
                     {posts &&
                         posts.map((post, id) => {
                             return (
-                                <div key={id} className="post-area">
-                                    <img
-                                        className="find-user"
-                                        src={post.profile_pic}
-                                    />
-                                    <p>
-                                        <Link to={`/user/${post.id}`}>
-                                            {post.first} {post.last}
-                                        </Link>
-                                    </p>
-                                    <p>{post.post}</p>
-                                    <img src={post.image} />
+                                <div key={id} className="each-post">
+                                    <div id="sender-p">
+                                        <img src={post.profile_pic} />
+                                        <p>
+                                            <Link
+                                                to={`/user/${post.sender_id}`}
+                                            >
+                                                {post.first} {post.last}
+                                            </Link>
+                                        </p>
+                                    </div>
+                                    <div id="posting">
+                                        <p id="date">at {post.created_at}:</p>
+                                        <p>{post.post}</p>
+                                        <img src={post.image} />
+                                    </div>
                                 </div>
                             );
                         })}
