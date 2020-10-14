@@ -14,7 +14,6 @@ const app = express();
 
 //middleware to see which files/routes we use on the browser
 app.use((req, res, next) => {
-    // console.log("req.url", req.url);
     next();
 });
 
@@ -99,8 +98,6 @@ app.post("/register", (req, res) => {
                 hashedPw
             )
                 .then((results) => {
-                    // console.log("hashed user password:", hashedPw);
-                    // console.log(results.rows[0]);
                     req.session.userId = results.rows[0].id;
                     req.session.success = "true";
                     res.json({
@@ -122,20 +119,18 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     db.getPassword(req.body.email)
         .then((results) => {
-            // console.log("result", req.body.email, results.rows[0].password);
             if (!results.rows[0]) {
                 res.json({
                     success: "false",
                 });
             } else {
-                console.log(req.body.password, results.rows[0].password);
                 compare(req.body.password, results.rows[0].password)
                     .then((matchValue) => {
                         req.session.userId = results.rows[0].usersId;
-                        console.log(
-                            "does the user password match our hash in the database?",
-                            matchValue
-                        );
+                        // console.log(
+                        //     "does the user password match our hash in the database?",
+                        //     matchValue
+                        // );
                         if (matchValue) {
                             req.session.userId = results.rows[0].id;
                             req.session.success = "true";
@@ -165,27 +160,13 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/reset-password", (req, res) => {
-    //     const { id } = req.params;
-    //     const results = await db.checkEmail(id);
-    //     console.log(results.rows);
-
-    //     if (id === req.session.userId) {
-    //         console.log("i#m already a user");
-    //     } else {
-    //         console.log("you're a lier");
-    //     }
-    // });
     const secretCode = cryptoRandomString({
         length: 6,
     });
 
     db.getPassword(req.body.email)
         .then((results) => {
-            // console.log("result", results.rows[0]);
-
             if (results.rows[0]) {
-                console.log("i#m already a user");
-
                 let to = results.rows[0].email;
                 let text = secretCode;
                 let subj = "Reset your password";
@@ -194,7 +175,6 @@ app.post("/reset-password", (req, res) => {
                         return sendEmail(to, text, subj);
                     })
                     .then(() => {
-                        // console.log("results send email: ", results);
                         res.json({
                             success: "true",
                         });
@@ -224,26 +204,13 @@ app.post("/new-password", (req, res) => {
     let newCode = req.body.code;
     let email = req.body.email;
     let pass = req.body.password;
-    // console.log(
-    //     "code before db: ",
-    //     req.body.code,
-    //     req.body.email,
-    //     req.body.password
-    // );
     db.getTheCode()
         .then((results) => {
-            // console.log("code: ", results.rows[0]);
             if (newCode === results.rows[0].code) {
-                // console.log("it's working: ", results.rows[0]);
                 hash(pass)
                     .then((hashedPassword) => {
                         db.addTheNewPassword(email, hashedPassword)
                             .then(() => {
-                                // console.log(
-                                //     "hashed user password:",
-                                //     hashedPassword
-                                // );
-
                                 req.session.success = "true";
                                 res.json({
                                     success: "true",
@@ -275,12 +242,7 @@ app.post("/new-password", (req, res) => {
 app.get("/user", (req, res) => {
     db.userInfo(req.session.userId)
         .then((results) => {
-            // console.log("user info: ", results.rows[0]);
-
-            res.json(
-                results.rows[0]
-                // success: "true",
-            );
+            res.json(results.rows[0]);
         })
         .catch((err) => {
             console.log("error in getting user info: ", err);
@@ -289,13 +251,11 @@ app.get("/user", (req, res) => {
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { filename } = req.file;
-    // console.log("file:", req.file);
 
     const url = s3Url + filename;
 
     db.addImage(req.session.userId, url)
         .then((results) => {
-            // console.log("results.rows:", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch((err) => {
@@ -306,7 +266,6 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 app.post("/bio", (req, res) => {
     db.addBio(req.session.userId, req.body.bio)
         .then((results) => {
-            // console.log("results.rows:", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch((err) => {
@@ -315,10 +274,6 @@ app.post("/bio", (req, res) => {
 });
 
 app.get("/api/user/:id", (req, res) => {
-    // type of params.id and session.id is different. one is a number and one is a string. so when I put
-    //=== in my if statement, it doesn't work!
-    // console.log("req.params.id: ", typeof req.params.id);
-    // console.log("req.session: ", typeof req.session.userId);
     if (req.params.id == req.session.userId) {
         res.json({
             isTheSameUser: true,
@@ -326,7 +281,6 @@ app.get("/api/user/:id", (req, res) => {
     } else {
         db.userInfo(req.params.id)
             .then((results) => {
-                // console.log("results in api/user: ", results.rows[0]);
                 res.json(results.rows[0]);
             })
             .catch((err) => {
@@ -339,7 +293,6 @@ app.get("/api/users", (req, res) => {
     db.getUsers()
         .then((results) => {
             res.json(results.rows);
-            // console.log("results.rows in users route", results.rows);
         })
         .catch((err) => {
             console.log("error in users route: ", err);
@@ -372,7 +325,6 @@ app.get("/api/friendship/:viewedId", (req, res) => {
     }
     db.friendshipStatus(req.params.viewedId, req.session.userId)
         .then((results) => {
-            // console.log("results in friendship status", results.rows);
             res.json(results.rows[0]);
         })
         .catch((err) => {
@@ -381,8 +333,6 @@ app.get("/api/friendship/:viewedId", (req, res) => {
 });
 
 app.post("/friendship-status", (req, res) => {
-    // console.log("req.body: ", req.body);
-
     if (req.body.buttonText == "Send a friend request") {
         db.addFriend(req.body.viewedId, req.session.userId)
             .then(() => {
@@ -420,10 +370,8 @@ app.post("/friendship-status", (req, res) => {
 });
 
 app.get("/api/friends", (req, res) => {
-    // console.log("req.session.userId", req.session.userId);
     db.getFriendsAndPotentials(req.session.userId)
         .then((results) => {
-            // console.log("results.rows", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {
@@ -432,7 +380,6 @@ app.get("/api/friends", (req, res) => {
 });
 
 app.post("/end-friendship", (req, res) => {
-    // console.log(req.body.friendsId, req.session.userId);
     db.deleteTheFriendship(req.body.friendsId, req.session.userId)
         .then(() => {
             res.json({
@@ -445,7 +392,6 @@ app.post("/end-friendship", (req, res) => {
 });
 
 app.post("/accept-friendship", (req, res) => {
-    // console.log(req.body.personsId, req.session.userId);
     db.acceptedFriendship(req.body.personsId, req.session.userId)
         .then(() => {
             res.json({
@@ -458,32 +404,18 @@ app.post("/accept-friendship", (req, res) => {
 });
 
 app.get("/wall-posts/:viewedId", (req, res) => {
-    // console.log("req.params.viewedId", req.params.viewedId);
-    // db.friendshipStatus(req.params.viewedId, req.session.userId)
-    //     .then((results) => {
-    //         if (results.rows.length) {
     db.receivePosts(req.params.viewedId)
         .then((results) => {
-            // console.log("results.rows: ", results.rows);
             res.json(results.rows);
         })
         .catch((err) => {
             console.log("error in getting the posts", err);
         });
-    // } else {
-    //     res.json({ success: false });
-    // }
 });
-// .catch((err) => {
-//     console.log("error in getting the friendship status", err);
-// });
-// });
 
 app.post("/publish-post", (req, res) => {
-    // console.log(req.body.inputs);
     db.insertPosts(req.body.inputs, req.body.viewedId, req.session.userId)
         .then((results) => {
-            // console.log("results.rows", results.rows);
             let postMessage = results.rows[0];
             db.getChatSender(req.session.userId)
                 .then((userInfo) => {
@@ -510,13 +442,11 @@ app.post(
         const url = s3Url + filename;
         db.postImage(req.session.userId, url, req.params.viewedId)
             .then((results) => {
-                // console.log("results.rows add image", results.rows[0]);
                 let postImage = results.rows[0];
                 db.getChatSender(req.session.userId)
                     .then((userInfo) => {
                         userInfo.rows[0].image = postImage.image;
                         userInfo.rows[0].created_at = postImage.created_at;
-                        console.log("results.rows", userInfo.rows[0]);
                         res.json(userInfo.rows[0]);
                     })
 
@@ -532,7 +462,6 @@ app.post(
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    console.log("your're logged out");
     res.redirect("/");
 });
 
@@ -545,23 +474,14 @@ app.get("*", function (req, res) {
 });
 
 io.on("connection", (socket) => {
-    // console.log(`socket with the id ${socket.id} is now CONNECTED`);
-    // console.log("socket.session: ", socket.request.session);
-
-    // userId is the id of the user who sent the chat message
     const { userId } = socket.request.session;
 
     if (!userId) {
         return socket.disconnect();
     }
 
-    // socket.on("disconnect", function () {
-    //     console.log(`socket with the id ${socket.id} is now DISCONNECTED`);
-    // });
-
     db.getChats()
         .then((results) => {
-            // console.log("results.rows", results.rows);
             let msgs = results.rows;
 
             socket.emit("recentChatMessages", msgs);
@@ -572,13 +492,10 @@ io.on("connection", (socket) => {
 
     socket.on("chatMessage", async (data) => {
         let { rows: chatRows } = await db.insertChats(data, userId);
-        // console.log("chatRows", chatRows);
         let { rows } = await db.getChatSender(userId);
         rows[0].message = data;
         rows[0].created_at = chatRows[0].created_at;
 
-        // console.log("rows: ", rows);
-        //send the mesage to all the users
         io.sockets.emit("chatMessage", rows);
     });
 });
