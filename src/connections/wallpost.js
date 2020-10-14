@@ -16,14 +16,12 @@ export default function WallPosts(props) {
                 const { data: friendship } = await axios.get(
                     "/api/friendship/" + viewedId
                 );
-                // console.log("friendship", friendship);
 
                 if (friendship.accepted == true) {
                     setFriendship(true);
                     const { data } = await axios.get("/wall-posts/" + viewedId);
 
                     setPosts(data);
-                    // console.log("data getting from posts", data);
                 }
             } catch (err) {
                 console.log("error in getting posts: ", err);
@@ -38,7 +36,6 @@ export default function WallPosts(props) {
             axios
                 .post("/post-image/" + viewedId, formData)
                 .then(({ data }) => {
-                    // console.log("data from post image", data);
                     setPosts([data, ...posts]);
                     setFile(null);
                 })
@@ -50,7 +47,6 @@ export default function WallPosts(props) {
                 axios
                     .post("/publish-post", { inputs, viewedId })
                     .then(({ data }) => {
-                        // console.log("data in publish post route", data);
                         setPosts([data, ...posts]);
                     })
                     .catch((err) =>

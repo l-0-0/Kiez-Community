@@ -17,7 +17,6 @@ export default function Chat() {
     function sendMessage(e) {
         socket.emit("chatMessage", chatMessage);
         document.querySelector("textarea").value = "";
-        // chat.value = "";
     }
 
     return (
@@ -54,7 +53,3 @@ export default function Chat() {
         </>
     );
 }
-
-// onClick={submit}
-// onChange={(e) => this.handleChange(e)}
-// defaultValue={this.props.bio}

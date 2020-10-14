@@ -1,8 +1,6 @@
 import React from "react";
 import axios from "./axios";
 
-// import { HashRouter, Route, Link } from "react-router-dom";
-
 export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
@@ -25,10 +23,7 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                //when the data is back we call the function from the parent
-                //the arg comes from the server!
                 this.props.showTheImage(data.profile_pic);
-                // console.log(data);
             })
             .catch(() =>
                 this.setState({
@@ -38,7 +33,6 @@ export default class Uploader extends React.Component {
     }
 
     render() {
-        // console.log("this.props in uploader: ", this.props);
         return (
             <div className="photo-uploader">
                 <label className="label">

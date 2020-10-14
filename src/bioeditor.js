@@ -9,7 +9,6 @@ export default class BioEditor extends React.Component {
         };
     }
     handleChange(e) {
-        // console.log("handlechange running");
         this.setState({
             [e.target.name]: e.target.value,
         });
@@ -33,7 +32,6 @@ export default class BioEditor extends React.Component {
         axios
             .post("/bio", { bio: this.state.textarea })
             .then(({ data }) => {
-                // console.log("bio", data.bio);
                 this.props.updateTheBio(data.bio);
             })
             .catch(() =>
@@ -45,7 +43,6 @@ export default class BioEditor extends React.Component {
 
     render() {
         const { bioText } = this.state;
-        // console.log("props in bio", this.props);
         if (bioText === "show") {
             if (this.props.bio) {
                 return (

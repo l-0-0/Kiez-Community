@@ -7,7 +7,6 @@ export default function FriendButton(props) {
 
     useEffect(() => {
         (async () => {
-            // console.log(viewedId);
             try {
                 const { data } = await axios.get("/api/friendship/" + viewedId);
 
@@ -34,7 +33,6 @@ export default function FriendButton(props) {
         axios
             .post("/friendship-status", { buttonText, viewedId })
             .then(({ data }) => {
-                // console.log("data in friendship **** route", data);
                 if (buttonText == "Send a friend request") {
                     setButtonText("Cancel the friendship request");
                 } else if (buttonText == "Cancel the friendship request") {

@@ -20,12 +20,9 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        // console.log("has mounted");
         axios
             .get("/user")
             .then(({ data }) => {
-                // console.log("data: ", { data });
-
                 if (data) {
                     this.setState(
                         {
@@ -56,7 +53,6 @@ export default class App extends React.Component {
             profileImg: image,
             visibleUploader: !this.state.visibleUploader,
         });
-        // console.log("image is: ", image);
     }
 
     updateTheBio(nBio) {
@@ -66,17 +62,12 @@ export default class App extends React.Component {
     }
 
     toggleModal() {
-        // console.log("toggle modal is running");
         this.setState({
             visibleUploader: !this.state.visibleUploader,
         });
     }
 
     render() {
-        // if (!this.state.id) {
-        //     return null;
-        // }
-
         return (
             <BrowserRouter>
                 <Fragment>
@@ -84,8 +75,6 @@ export default class App extends React.Component {
                         <Logo />
 
                         <ProfilePic
-                            //give props to the child
-
                             first={this.state.first}
                             last={this.state.last}
                             profileImg={this.state.profileImg}

@@ -5,11 +5,7 @@ import ResetPassword from "./resetpassword";
 import { HashRouter, Route, Link } from "react-router-dom";
 
 export default function Welcome(props) {
-    // const style = {
-    //     backgroundColor: "tomato",
-    // };
     return (
-        // <div style={style}>
         <HashRouter>
             <div className="welcome-page">
                 <img className="logo-welcome" src="/logo-new.jpg" alt="logo" />
@@ -25,7 +21,3 @@ export default function Welcome(props) {
         </HashRouter>
     );
 }
-
-//I can also put the function in a variable and call that in the render!
-//const elem = <Welcome />
-//ReactDOM.render(elem, document.querySelector("main"));

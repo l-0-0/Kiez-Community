@@ -2,7 +2,7 @@ import axios from "../axios";
 
 export async function receiveFriendsWannabes() {
     const { data } = await axios.get("/api/friends");
-    // console.log("data", data);
+
     return {
         type: "RECEIVE_FRIENDSWANNABES",
         friendsWannabes: data,

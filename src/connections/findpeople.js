@@ -13,7 +13,6 @@ export default function FindPeople() {
                 const { data } = await axios.get("/api/users");
 
                 setPeople(data);
-                // console.log("data in users route", data);
             } catch (err) {
                 console.log("error in finding last users: ", err);
             }

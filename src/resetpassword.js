@@ -102,17 +102,3 @@ export default class ResetPassword extends React.Component {
         }
     }
 }
-
-// return (
-//     <div>
-//         {step == 1 && (
-//             <div></div>
-//         )}
-//         {step == 2 && (
-//             <div></div>
-//         )}
-//         {step == 3 && (
-//             <div></div>
-//         )}
-//     </div>
-// )
